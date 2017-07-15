@@ -5,7 +5,7 @@ var fs = require('fs');
 function hitBTCTicker () {
   request('https://api.hitbtc.com/api/1/public/ticker', function (error, response, body) {
     if (!error && response.statusCode == 200) {
-         returnObj = JSON.parse(body);
+        var returnObj = JSON.parse(body);
         var timeNow = new Date();
           for (var i=0; i<Object.keys(returnObj).length; i++) {
           if (returnObj[Object.keys(returnObj)[i]] != null && Object.keys(returnObj)[i].indexOf("BTC") !== -1) {
@@ -19,3 +19,14 @@ function hitBTCTicker () {
 }
 
 module.exports = hitBTCTicker;
+
+/*
+current orders
+https://api.hitbtc.com/api/1/public/BCNBTC/orderbook
+
+order history
+https://api.hitbtc.com/api/1/public/BTCUSD/trades?from=1499305319489&by=ts
+from value in the above url is UTC in ms, first get the currrent UTC in ms using
+https://api.hitbtc.com//api/1/public/time
+and then subtract 3600000 from it to get an hour earliers time in UTC ms
+*/

@@ -35,7 +35,7 @@ function getAllBittrexMarkets () {
   request('https://bittrex.com/api/v1.1/public/getmarkets', function (error, response, body) {
     if (!error && response.statusCode == 200) {
       var count = 2;
-      data= JSON.parse(body);
+      var data= JSON.parse(body);
       for (var i in data.result) {
         // Also add logic to delete the corresponding db table and copy these new markets instead
         if (data.result[i].MarketName.substring(0,4) == 'BTC-' || data.result[i].MarketName == 'USDT-BTC' ) {
@@ -60,3 +60,17 @@ module.exports = {
 }
 */
 module.exports = getAllBittrexMarkets;
+
+
+/*
+order book
+https://bittrex.com/api/v1.1/public/getorderbook?market=BTC-LTC&type=both
+https://bittrex.com/api/v1.1/public/getorderbook?market=BTC-LTC&type=both&depth=50
+
+order history - last 200
+https://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-DOGE
+
+last 24 hr summary
+https://bittrex.com/api/v1.1/public/getmarketsummary?market=btc-ltc
+
+*/

@@ -61,3 +61,11 @@ function coinExchangeMarkets () {
 }
 
 module.exports = coinExchangeMarkets;
+
+/*
+current orders:
+https://www.coinexchange.io/api/v1/getorderbook?market_id=19
+
+order history - not sure how far the result goes back
+https://www.coinexchange.io/api/v1/getmarketsummary?market_id=19
+*/

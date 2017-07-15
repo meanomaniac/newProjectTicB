@@ -34,7 +34,7 @@ function getYoBitMarketPrices (counter) {
 function getYoBitMarkets () {
   request('https://yobit.net/api/3/info', function (error, response, body) {
     if (!error && response.statusCode == 200) {
-         returnObj = JSON.parse(body);
+      var returnObj = JSON.parse(body);
         var timeNow = new Date();
         for (var i=0; i<Object.keys(returnObj.pairs).length; i++) {
           if (Object.keys(returnObj.pairs)[i].indexOf("_btc") !== -1 || Object.keys(returnObj.pairs)[i].indexOf("btc_usd") !== -1) {
@@ -51,3 +51,13 @@ function getYoBitMarkets () {
 }
 
 module.exports = getYoBitMarkets;
+
+/*
+open orders
+https://yobit.net/api/3/depth/ltc_btc
+
+order history
+https://yobit.net/api/3/trades/ltc_btc
+GET-parameter limit stipulates size of withdrawal (on default 150 to 2000 maximum).
+
+*/
