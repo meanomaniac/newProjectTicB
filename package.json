@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/meanomaniac/newProjectTicB#readme",
   "dependencies": {
+    "mysql": "^2.13.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.1"
   }
