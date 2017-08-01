@@ -2,9 +2,10 @@
 
 var request =require('request');
 var fs = require('fs');
-var mainFunction = require('../app.js');
+var createDataObjects = require('../createDataObjects.js');
+var qualifyData = require('../qualifyData.js');
 
-function ticker (exchange, oldTickerObj, changeThreshold, qualifyData, createTickerObj, returnCompleteTickerObj) {
+function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
   var newTickerObj = {};
   request('https://www.cryptopia.co.nz/api/GetMarkets', function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -19,60 +20,55 @@ function ticker (exchange, oldTickerObj, changeThreshold, qualifyData, createTic
             else {
               oldTrackingStatus = 0;
             }
-            newTickerObj = createTickerObj(exchange, newTickerObj, returnObj.Data[i].Label, returnObj.Data[i].AskPrice, timeNow, oldTrackingStatus);
+            newTickerObj = createDataObjects.createTickerObj(exchange, newTickerObj, returnObj.Data[i].Label, returnObj.Data[i].AskPrice, timeNow, oldTrackingStatus);
             // save all the markets into an object which will contain properties with the same name as the exchange tradePairs and values being another object with each of the values saved using the file command above
           }
       }
-      newTickerObj = returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
+      newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
       fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/ticker2/Cryptopia2.txt", " "+JSON.stringify(newTickerObj), function(err) {
          if(err) { return console.log(err); }
      });
-      qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold);
+      qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
     }
   });
 }
 
 function openOrders (tradePairArr, iterator) {
-  request('https://www.cryptopia.co.nz/api/GetMarketOrders/'+tradePairArr[iterator]+'/10000', function (error, response, body) {
-    var returnObj2 = (JSON.parse(body)).Data;
-    var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
-    if (!error && response.statusCode == 200) {
-        for (var i in returnObj2.Buy) {
-          fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/openOrders/CryptopiaOpenOrders.txt", "Buy "+i+": "+returnObj2.Buy[i].Total+"\n", function(err) {
+    iterator++;
+    request('https://www.cryptopia.co.nz/api/GetMarketOrders/'+tradePairArr[iterator]+'/10000', function (error, response, body) {
+      var returnObj2 = (JSON.parse(body)).Data;
+      var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
+      if (!error && response.statusCode == 200) {
+          for (var i in returnObj2.Buy) {
+            fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/openOrders/CryptopiaOpenOrders.txt", "Buy "+i+": "+returnObj2.Buy[i].Total+"\n", function(err) {
+               if(err) { return console.log(err); }
+           });
+           buyArray.push(+returnObj2.Buy[i].Total);
+           totalBuyAmount+=returnObj2.Buy[i].Total;
+        }
+        // save all the console.logs below as the values of a property in an object, the property having the same name as the tradePair
+        // console.log('tradePair: '+tradePairArr[iterator]);  console.log("Buy Max: "+Math.max.apply(Math, buyArray)); console.log("Buy Min: "+Math.min.apply(Math, buyArray)); console.log("Buy Order count: "+returnObj2.Buy.length); console.log("Total Buy amount: "+totalBuyAmount);
+        for (var i in returnObj2.Sell) {
+          fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/openOrders/CryptopiaOpenOrders.txt", "Sell "+i+": "+returnObj2.Sell[i].Total+"\n", function(err) {
              if(err) { return console.log(err); }
          });
-         buyArray.push(+returnObj2.Buy[i].Total);
-         totalBuyAmount+=returnObj2.Buy[i].Total;
+         sellArray.push(+returnObj2.Sell[i].Total);
+         totalSellAmount+=returnObj2.Sell[i].Total;
       }
-      // save all the console.logs below as the values of a property in an object, the property having the same name as the tradePair
-      console.log("Buy Max: "+Math.max.apply(Math, buyArray));
-      console.log("Buy Min: "+Math.min.apply(Math, buyArray));
-      console.log("Buy Order count: "+returnObj2.Buy.length);
-      console.log("Total Buy amount: "+totalBuyAmount);
-      for (var i in returnObj2.Sell) {
-        fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/openOrders/CryptopiaOpenOrders.txt", "Sell "+i+": "+returnObj2.Sell[i].Total+"\n", function(err) {
-           if(err) { return console.log(err); }
-       });
-       sellArray.push(+returnObj2.Sell[i].Total);
-       totalSellAmount+=returnObj2.Sell[i].Total;
-    }
-    console.log("Sell Max: "+Math.max.apply(Math, sellArray));
-    console.log("Sell Min: "+Math.min.apply(Math, sellArray));
-    console.log("Sell Order count: "+returnObj2.Sell.length);
-    console.log("Total Sell amount: "+totalSellAmount);
-    var timeNow = new Date();
-    mainFunction.returnopenOrdersObj('cryptopia', tradePairArr[iterator], timeNow, Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
-                                    returnObj2.Buy.length, totalBuyAmount, Math.max.apply(Math, sellArray),
-                                    Math.min.apply(Math, sellArray), returnObj2.Sell.length, totalSellAmount, timeNow);
-    }
-    if (iterator<tradePairArr.length-1) {
-      openOrders (tradePairArr, iterator);
-    }
-  });
+      // console.log("Sell Max: "+Math.max.apply(Math, sellArray)); console.log("Sell Min: "+Math.min.apply(Math, sellArray)); console.log("Sell Order count: "+returnObj2.Sell.length); console.log("Total Sell amount: "+totalSellAmount);
+      var timeNow = new Date();
+      createDataObjects.returnopenOrdersObj('cryptopia', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
+                                      returnObj2.Buy.length, totalBuyAmount, Math.max.apply(Math, sellArray),
+                                      Math.min.apply(Math, sellArray), returnObj2.Sell.length, totalSellAmount, timeNow);
+      }
+      if (iterator<tradePairArr.length-1) {
+        openOrders (tradePairArr, iterator);
+      }
+    });
 }
 
 function orderHistory (tradePairArr, iterator) {
-  // add logic to convert the '/' to a '_' for cryptopia only
+  // logic to convert the '/' to a '_' for cryptopia only
   if (iterator<0 && tradePairArr[iterator].includes('/')) {
     tradePairSplitArr = tradePairArr[iterator].split('/');
     tradePairArr[iterator] = tradePairSplitArr[0]+'_'+tradePairSplitArr[1];
@@ -95,16 +91,9 @@ function orderHistory (tradePairArr, iterator) {
                totalSellAmount+=returnObj3[i].Total;
              }
           }
-          console.log("Buy Max : "+Math.max.apply(Math, buyArray));
-          console.log("Buy Min : "+Math.min.apply(Math, buyArray));
-          console.log("Buy Order count : "+buyArray.length);
-          console.log("Total Buy amount : "+totalBuyAmount);
-          console.log("Sell Max : "+Math.max.apply(Math, sellArray));
-          console.log("Sell Min : "+Math.min.apply(Math, sellArray));
-          console.log("Sell Order count : "+sellArray.length);
-          console.log("Total Sell amount : "+totalSellAmount);
+          console.log('tradePair: '+Arr[iterator]); console.log("Buy Max : "+Math.max.apply(Math, buyArray)); console.log("Buy Min : "+Math.min.apply(Math, buyArray)); console.log("Buy Order count : "+buyArray.length); console.log("Total Buy amount : "+totalBuyAmount); console.log("Sell Max : "+Math.max.apply(Math, sellArray)); console.log("Sell Min : "+Math.min.apply(Math, sellArray));  console.log("Sell Order count : "+sellArray.length); console.log("Total Sell amount : "+totalSellAmount);
           var timeNow = new Date();
-          mainFunction.returnHistoryObj('cryptopia', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
+          createDataObjects.returnHistoryObj('cryptopia', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
                                         buyArray.length, totalBuyAmount, Math.max.apply(Math, sellArray),
                                         Math.min.apply(Math, sellArray), sellArray.length, totalSellAmount, timeNow);
         }
