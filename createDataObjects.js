@@ -1,4 +1,6 @@
 var writeToDB = require('./writeToDB.js');
+var openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
+var orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
 
 var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldTrackingStatus) {
   var objProperty = label;
@@ -53,13 +55,27 @@ function returnopenOrdersObj (exchange, tradePair, maxBuy, minBuy, totalBuys, to
   };
   dbArray.push(openOrdersObj);
   console.log(openOrdersObj);
-  //writeToDB('cryptopia', dbArray);
+  writeToDB('openOrders', exchange, openOrdersDBColumns, dbArray, -1);
 }
 
-function returnHistoryObj (exchange, tradePair, maxBuy, minBuy, totalBuys, totalBuyAmount, maxSell, minSell, totalSells, totalSellAmount, timeNow) {
+function returnHistoryObj (exchange, tradePair, maxBuy, minBuy, totalBuys, totalBuyAmount, maxSell, minSell, totalSells, totalSellAmount, recordTime) {
   var dbArray = [];
+  orderHistoryObj = {
+    'exchange': exchange,
+    'tradePair': tradePair,
+    'maxBuy': maxBuy,
+    'minBuy': minBuy,
+    'totalBuys': totalBuys,
+    'totalBuyAmount': totalBuyAmount,
+    'maxSell': maxSell,
+    'minSell': minSell,
+    'totalSells': totalSells,
+    'totalSellAmount': totalSellAmount,
+    'recordTime': recordTime
+  };
   dbArray.push(orderHistoryObj);
-  //writeToDB('cryptopia', dbArray);
+  console.log(orderHistoryObj);
+  writeToDB('orderHistory', exchange, orderHistoryDBColumns, dbArray, -1);
 }
 
 module.exports = {createTickerObj, returnCompleteTickerObj, returnopenOrdersObj, returnHistoryObj};

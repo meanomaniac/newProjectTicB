@@ -69,11 +69,11 @@ function openOrders (tradePairArr, iterator) {
 
 function orderHistory (tradePairArr, iterator) {
   // logic to convert the '/' to a '_' for cryptopia only
+  iterator++;
   if (iterator<0 && tradePairArr[iterator].includes('/')) {
     tradePairSplitArr = tradePairArr[iterator].split('/');
     tradePairArr[iterator] = tradePairSplitArr[0]+'_'+tradePairSplitArr[1];
   }
-    iterator++;
       request('https://www.cryptopia.co.nz/api/GetMarketHistory/'+tradePairArr[iterator], function (error, response, body) {
         var returnObj3 = (JSON.parse(body)).Data;
         var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
@@ -91,7 +91,8 @@ function orderHistory (tradePairArr, iterator) {
                totalSellAmount+=returnObj3[i].Total;
              }
           }
-          console.log('tradePair: '+Arr[iterator]); console.log("Buy Max : "+Math.max.apply(Math, buyArray)); console.log("Buy Min : "+Math.min.apply(Math, buyArray)); console.log("Buy Order count : "+buyArray.length); console.log("Total Buy amount : "+totalBuyAmount); console.log("Sell Max : "+Math.max.apply(Math, sellArray)); console.log("Sell Min : "+Math.min.apply(Math, sellArray));  console.log("Sell Order count : "+sellArray.length); console.log("Total Sell amount : "+totalSellAmount);
+          console.log('tradePair: '+tradePairArr[iterator]); console.log("Buy Max : "+Math.max.apply(Math, buyArray)); console.log("Buy Min : "+Math.min.apply(Math, buyArray)); console.log("Buy Order count : "+buyArray.length); console.log("Total Buy amount : "+totalBuyAmount);
+          console.log("Sell Max : "+Math.max.apply(Math, sellArray)); console.log("Sell Min : "+Math.min.apply(Math, sellArray));  console.log("Sell Order count : "+sellArray.length); console.log("Total Sell amount : "+totalSellAmount);
           var timeNow = new Date();
           createDataObjects.returnHistoryObj('cryptopia', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
                                         buyArray.length, totalBuyAmount, Math.max.apply(Math, sellArray),

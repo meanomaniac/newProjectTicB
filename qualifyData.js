@@ -25,7 +25,7 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
     fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/ticker2/Cryptopia3.txt", " "+JSON.stringify(dbArray), function(err) {
        if(err) { return console.log(err); }
    });
-   writeToDB('cTicker', exchange, tickerDBColumns, dbArray);
+   writeToDB('cTicker', exchange, tickerDBColumns, dbArray, -1);
   }
   if (marketDataArray.length > 0) {
     // exchange.openOrders(marketDataArray, -1);

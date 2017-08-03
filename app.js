@@ -11,8 +11,6 @@ var poloniex = require('./tickerFiles/poloniex.js');
 var coinExchange = require('./tickerFiles/coinExchange.js');
 var exchanges = [coinMarketCap, bittrex, livecoin, cryptopia, novaexchange, hitBTC, yoBit, poloniex, coinExchange];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
-var openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
-var orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
 var thirtySecThreshold = 0.1,
 fiveMinThreshold = 0.0001;
 var cmcUSDBTC;
@@ -54,7 +52,8 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
     returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
 }
 
- cryptopia.openOrders(['ALL_BTC'], -1);
+// cryptopia.openOrders(['ALL_BTC'], -1);
+ cryptopia.orderHistory(['ALL_BTC'], -1);
 // cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
 // writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
 // writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);
