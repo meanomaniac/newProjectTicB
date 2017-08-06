@@ -48,12 +48,11 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
   var coinMarketCapObj, bittrexObj, livecoinObj, cryptopiaObj, novaexchangeObj, hitBTCObj, yoBitObj, poloniexObj, coinExchangeObj;
   var exchangeObjs = [coinMarketCapObj, bittrexObj, livecoinObj, cryptopiaObj, novaexchangeObj, hitBTCObj, yoBitObj, poloniexObj, coinExchangeObj];
   setIntervalSynchronous (function (exchangeObjs, changeThreshold, marketsWritableToDB) {
-    var marketsWritableToDB = [];
     returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
 }
 
-// cryptopia.openOrders(['ALL_BTC'], -1);
- cryptopia.orderHistory(['ALL_BTC'], -1);
-// cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
+// cryptopia.openOrders(['ZSE_BTC'], -1);
+// cryptopia.orderHistory(['4CHN_BTC'], -1);
+ cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
 // writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
 // writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);

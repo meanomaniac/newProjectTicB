@@ -40,8 +40,6 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
   con.query(query, queryParameters, function (err, result) {
     if (err) {
       console.log("dbError: "+err);
-      console.log('query: ');
-      console.log(query1);
     };
     if (iterator < objArr.length -1) {
       writeToDB(table, exchange, columnsArr, objArr, iterator);
