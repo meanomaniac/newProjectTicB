@@ -8,7 +8,7 @@ var qualifyData = require('../qualifyData.js');
 function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
   var newTickerObj = {};
   request('https://www.cryptopia.co.nz/api/GetMarkets', function (error, response, body) {
-    if (!error && response.statusCode == 200 && body != null) {
+    if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
         var returnObj = JSON.parse(body);
         var timeNow = new Date();
         for (var i in returnObj.Data) {
@@ -46,7 +46,7 @@ function openOrders (tradePairArr, iterator) {
       tradePairArr[iterator] = tradePairSplitArr[0]+'_'+tradePairSplitArr[1];
     }
     request('https://www.cryptopia.co.nz/api/GetMarketOrders/'+tradePairArr[iterator]+'/10000', function (error, response, body) {
-      if (!error && response.statusCode == 200 && body != null) {
+      if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
       //  console.log('openOrders entered');
         var returnObj2 = (JSON.parse(body)).Data;
         var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
@@ -62,9 +62,11 @@ function openOrders (tradePairArr, iterator) {
         // save all the console.logs below as the values of a property in an object, the property having the same name as the tradePair
         // console.log('tradePair: '+tradePairArr[iterator]);  console.log("Buy Max: "+Math.max.apply(Math, buyArray)); console.log("Buy Min: "+Math.min.apply(Math, buyArray)); console.log("Buy Order count: "+returnObj2.Buy.length); console.log("Total Buy amount: "+totalBuyAmount);
         for (var i in returnObj2.Sell) {
+          /*
           fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/openOrders/CryptopiaOpenOrders.txt", "Sell "+i+": "+returnObj2.Sell[i].Total+"\n", function(err) {
              if(err) { return console.log(err); }
          });
+         */
          sellArray.push(+returnObj2.Sell[i].Total);
          totalSellAmount+=returnObj2.Sell[i].Total;
       }
@@ -81,6 +83,7 @@ function openOrders (tradePairArr, iterator) {
                                       Math.min.apply(Math, sellArray), returnObj2.Sell.length, totalSellAmount, timeNow);
       }
       else {
+        console.log('get in openOrders failed: ');
         console.log(tradePairArr[iterator]);
         console.log(body);
       }
@@ -98,7 +101,7 @@ function orderHistory (tradePairArr, iterator) {
     tradePairArr[iterator] = tradePairSplitArr[0]+'_'+tradePairSplitArr[1];
   }
       request('https://www.cryptopia.co.nz/api/GetMarketHistory/'+tradePairArr[iterator], function (error, response, body) {
-        if (!error && response.statusCode == 200 && body != null) {
+        if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
         //  console.log('orderHistory entered');
           var returnObj3 = (JSON.parse(body)).Data;
           var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
@@ -131,6 +134,7 @@ function orderHistory (tradePairArr, iterator) {
                                         Math.min.apply(Math, sellArray), sellArray.length, totalSellAmount, timeNow);
         }
         else {
+          console.log('get in orderHistory failed: ');
           console.log(tradePairArr[iterator]);
           console.log(body);
         }
