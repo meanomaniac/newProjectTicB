@@ -1,0 +1,2 @@
+symbol: BTC_BCN, SP: 0.00000045, time: Sun Aug 06 2017 21:44:15 GMT-0400 (EDT), trackingStatus:
+symbol: BTC_BELA, SP: 0.00006238, time: Sun Aug 06 2017 21:44:15 GMT-0400 (EDT), trackingStatus:

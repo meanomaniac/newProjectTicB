@@ -1,0 +1,2 @@
+symbol: BCNBTC, SP: 0.0000004095, time: Sun Aug 06 2017 21:44:15 GMT-0400 (EDT), trackingStatus:
+symbol: BTCUSD, SP: 3210.98, time: Sun Aug 06 2017 21:44:15 GMT-0400 (EDT), trackingStatus:

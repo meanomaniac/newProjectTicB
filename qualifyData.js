@@ -3,7 +3,11 @@ var writeToDB = require('./writeToDB.js');
 
 var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns) {
   var dbArray = [];
-  var cryptopia = require('./tickerFiles/cryptopia.js');
+  var cryptopia = require('./tickerFiles/cryptopia.js'), coinMarketCap = require('./tickerFiles/coinMarketCap.js'),
+  bittrex = require('./tickerFiles/bittrex.js'), livecoin = require('./tickerFiles/livecoin.js'),
+  cryptopia = require('./tickerFiles/cryptopia.js'), novaexchange = require('./tickerFiles/novaexchange.js'),
+  hitBTC = require('./tickerFiles/hitBTC.js'), yoBit = require('./tickerFiles/yoBit.js'),
+  poloniex = require('./tickerFiles/poloniex.js'), coinExchange = require('./tickerFiles/coinExchange.js');
   var marketDataArray = [];
   for (var i=0; i<Object.keys(newTickerObj).length; i++) {
     var arrayIndex = Object.keys(newTickerObj)[i];
@@ -38,17 +42,30 @@ switch (exchange) {
   case 'cryptopia':
     exchangeObj = cryptopia;
     break;
+  case 'livecoin':
+    exchangeObj = livecoin;
+    break;
+  case 'novaexchange':
+    exchangeObj = novaexchange;
+    break;
+  case 'hitBTC':
+    exchangeObj = hitBTC;
+    break;
+  case 'poloniex':
+    exchangeObj = poloniex;
+    break;
   default:
     break;
 }
   // console.log('data array for order history: ')
   // console.log(marketDataArray);
-
+/*
   if (marketDataArray.length > 0) {
       console.log('writing specifc records to order tables');
      exchangeObj.openOrders(marketDataArray, -1);
      exchangeObj.orderHistory(marketDataArray, -1);
   }
+  */
 }
 
 module.exports = qualifyData;

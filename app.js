@@ -9,6 +9,7 @@ var hitBTC = require('./tickerFiles/hitBTC.js');
 var yoBit = require('./tickerFiles/yoBit.js');
 var poloniex = require('./tickerFiles/poloniex.js');
 var coinExchange = require('./tickerFiles/coinExchange.js');
+var stdGetPublicData = require('./stdGetPublicData.js');
 var exchanges = [coinMarketCap, bittrex, livecoin, cryptopia, novaexchange, hitBTC, yoBit, poloniex, coinExchange];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
 var thirtySecThreshold = 0.1,
@@ -51,8 +52,14 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
     returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
 }
 
+// cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
 // cryptopia.openOrders(['ZSE_BTC'], -1);
 // cryptopia.orderHistory(['4CHN_BTC'], -1);
- cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
+// hitBTC();
+// livecoin();
+// novaexchange();
+// poloniex();
+stdGetPublicData.ticker('poloniex', {}, 0.1, tickerDBColumns);
+
 // writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
 // writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);

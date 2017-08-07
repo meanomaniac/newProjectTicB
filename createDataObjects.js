@@ -1,4 +1,4 @@
-var writeToDB = require('./writeToDB.js');
+var writeToDB = require('./writeToDB.js'), fs = require('fs');
 var openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
 var orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
 
@@ -10,6 +10,9 @@ var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldT
       cmcUSDBTC = spVar;
     }
   }
+  fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/del.txt", objProperty+'\n', function(err) {
+     if(err) { return console.log(err); }
+ });
   tickerObj[objProperty] = {tradePair: label,
                               SPBTC: spVar,
                               time: timeVar,
