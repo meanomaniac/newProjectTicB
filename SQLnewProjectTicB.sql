@@ -46,6 +46,9 @@ delete from orderHistory where true=true;
 show tables;
 describe openOrders;
 
+select count(distinct tradePair) from orderHistory;
+select count(distinct tradePair) from cTicker;
+select distinct tradePair from orderHistory;
 
 select * from cTicker;
 select * from openOrders;
@@ -53,4 +56,6 @@ select * from orderHistory;
 select count(*) from cTicker;
 select count(*) from openOrders;
 select count(*) from orderHistory;
+
+
 

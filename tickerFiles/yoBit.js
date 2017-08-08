@@ -36,12 +36,12 @@ function getYoBitMarkets () {
     if (!error && response.statusCode == 200) {
       var returnObj = JSON.parse(body);
         var timeNow = new Date();
-        for (var i=0; i<Object.keys(returnObj.pairs).length; i++) {
-          if (Object.keys(returnObj.pairs)[i].indexOf("_btc") !== -1 || Object.keys(returnObj.pairs)[i].indexOf("btc_usd") !== -1) {
-            fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/yoBit.txt", Object.keys(returnObj.pairs)[i]+"\n", function(err) {
+        for (var i in returnObj.pairs) {
+          if (i.indexOf("_btc") !== -1 || i.indexOf("btc_usd") !== -1) {
+            fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/yoBit.txt", i+"\n", function(err) {
                if(err) { return console.log(err); }
            });
-           yoBitMarkets.push(Object.keys(returnObj.pairs)[i]);
+           yoBitMarkets.push(i);
          }
       }
     }

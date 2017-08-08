@@ -9,8 +9,7 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
   hitBTC = require('./tickerFiles/hitBTC.js'), yoBit = require('./tickerFiles/yoBit.js'),
   poloniex = require('./tickerFiles/poloniex.js'), coinExchange = require('./tickerFiles/coinExchange.js');
   var marketDataArray = [];
-  for (var i=0; i<Object.keys(newTickerObj).length; i++) {
-    var arrayIndex = Object.keys(newTickerObj)[i];
+  for (var arrayIndex in newTickerObj) {
     var priceDiff;
     if (oldTickerObj[arrayIndex] != undefined) {
       priceDiff = Math.abs((newTickerObj[arrayIndex].SPBTC-oldTickerObj[arrayIndex].SPBTC)/oldTickerObj[arrayIndex].SPBTC);
@@ -60,7 +59,7 @@ switch (exchange) {
   // console.log('data array for order history: ')
   // console.log(marketDataArray);
 /*
-  if (marketDataArray.length > 0) {
+  if (marketDataArray.length > 0 && exchange != 'coinMarketCap') {
       console.log('writing specifc records to order tables');
      exchangeObj.openOrders(marketDataArray, -1);
      exchangeObj.orderHistory(marketDataArray, -1);

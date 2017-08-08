@@ -1,2 +1,0 @@
-symbol: $$$/BTC, SP: 4.9e-7, time: Sun Jul 16 2017 22:10:52 GMT-0400 (EDT), trackingStatus:
-symbol: 1337/BTC, SP: 4e-8, time: Sun Jul 16 2017 22:10:52 GMT-0400 (EDT), trackingStatus: 

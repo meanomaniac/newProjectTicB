@@ -10,9 +10,6 @@ var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldT
       cmcUSDBTC = spVar;
     }
   }
-  fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/del.txt", objProperty+'\n', function(err) {
-     if(err) { return console.log(err); }
- });
   tickerObj[objProperty] = {tradePair: label,
                               SPBTC: spVar,
                               time: timeVar,
@@ -29,8 +26,7 @@ var returnCompleteTickerObj = function (tickerObj, oldTickerObj, timeVar) {
                                 trackingStatus: -100
                                };
   }
-    for (var i=0; i<Object.keys(tickerObj).length; i++) {
-      var arrayIndex = Object.keys(tickerObj)[i];
+    for (var arrayIndex in tickerObj) {
       tickerObj[arrayIndex].SPUSD = tickerObj.USD_BTC.SPBTC * tickerObj[arrayIndex].SPBTC;
     }
 
