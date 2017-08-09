@@ -70,7 +70,51 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns) {
     })
 }
 
-module.exports = coinExchangeMarkets;
+function getOpenOrders (tradePairArr, iterator) {
+  iterator++;
+  var options = {
+    method: 'GET',
+    uri: 'https://www.coinexchange.io/api/v1/getorderbook?market_id='+tradePairArr[iterator],
+    headers: { 'User-Agent': 'test' },
+    json: true
+  }
+
+  rp(options)
+    .then(body => {
+        var returnObj2 = body;
+        var buyLoopVar = returnObj2.result.BuyOrders; var sellLoopVar = returnObj2.result.SellOrders;
+        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
+          for (var i in buyLoopVar) {
+          var buyObj = Number(returnObj2.result.BuyOrders[i].Quantity)*Number(returnObj2.result.BuyOrders[i].Price);
+           buyArray.push(+buyObj);
+           totalBuyAmount+=buyObj;
+        }
+        for (var i in sellLoopVar) {
+        var sellObj = Number(returnObj2.result.SellOrders[i].Quantity)*Number(returnObj2.result.SellOrders[i].Price);
+         sellArray.push(+sellObj);
+         totalSellAmount+=sellObj;
+      }
+      if (buyArray.length == 0) {
+        buyArray.push(0);
+      }
+      if (sellArray.length == 0) {
+        sellArray.push(0);
+      }
+      var timeNow = new Date();
+      createDataObjects.returnopenOrdersObj('coinExchange', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
+                                      buyLoopVar.length, totalBuyAmount, Math.max.apply(Math, sellArray),
+                                      Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
+      if (iterator<tradePairArr.length-1) {
+        openOrders (exchange, tradePairArr, iterator);
+      }
+  })
+  .catch(e => {
+    console.log('error in coinexchange ticker');
+    console.log(e);
+  })
+}
+
+module.exports = {coinExchangeMarkets, getOpenOrders};
 
 /*
 current orders:

@@ -22,6 +22,7 @@ module.exports = novaexchangeTicker;
 
 /*
 current/open orders:
+https://novaexchange.com/remote/v2/market/openorders/BTC_LTC/BOTH/
 https://novaexchange.com/remote/v2/market/openorders/BTC_LTC/SELL/
 https://novaexchange.com/remote/v2/market/openorders/BTC_LTC/BUY/
 

@@ -11,6 +11,7 @@ var poloniex = require('./tickerFiles/poloniex.js');
 var coinExchange = require('./coinExchange.js');
 var stdGetPublicData = require('./stdGetPublicData.js');
 var stdGetPublicData2 = require('./stdGetPublicData2.js');
+var openOrders = require('./openOrders.js');
 var exchanges = [coinMarketCap, bittrex, livecoin, cryptopia, novaexchange, hitBTC, yoBit, poloniex, coinExchange];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
 var thirtySecThreshold = 0.1,
@@ -34,6 +35,9 @@ var setIntervalSynchronous = function (func, delay) {
   return clear;
 };
 
+// writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
+// writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);
+
 function returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, functionIteration) {
   functionIteration++;
   // use functionIteration to loop through all exchangeObjs and perform the following
@@ -52,12 +56,3 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
   setIntervalSynchronous (function (exchangeObjs, changeThreshold, marketsWritableToDB) {
     returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
 }
-
-// cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
-// cryptopia.openOrders(['ZSE_BTC'], -1);
-// cryptopia.orderHistory(['4CHN_BTC'], -1);
-// stdGetPublicData.ticker('coinMarketCap', {}, 0.1, tickerDBColumns);
-// stdGetPublicData2.getAllMarkets('yoBit', {}, 0.1, tickerDBColumns);
-coinExchange({}, 0.1, tickerDBColumns);
-// writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
-// writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);

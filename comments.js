@@ -1,3 +1,24 @@
+
+// openOrders.getOpenOrders('cryptopia', ['ZSE_BTC'], -1);
+// openOrders.getOpenOrders('bittrex', ['BTC-LTC'], -1);
+// openOrders.getOpenOrders('hitBTC', ['BCNBTC'], -1);
+// openOrders.getOpenOrders('livecoin', ['BTC/USD'], -1);
+// openOrders.getOpenOrders('poloniex', ['BTC_NXT'], -1);
+// openOrders.getOpenOrders('yoBit', ['eth_btc'], -1);
+// coinExchange.getOpenOrders(['87'], -1);
+// openOrders.getOpenOrders('novaexchange', ['BTC_LTC'], -1);
+
+// cryptopia.ticker('cryptopia', {}, 0.1, tickerDBColumns);
+// cryptopia.openOrders(['ZSE_BTC'], -1);
+// cryptopia.orderHistory(['4CHN_BTC'], -1);
+// stdGetPublicData.ticker('coinMarketCap', {}, 0.1, tickerDBColumns);
+// stdGetPublicData2.getAllMarkets('yoBit', {}, 0.1, tickerDBColumns);
+// coinExchange({}, 0.1, tickerDBColumns);
+
+
+
+
+
  // coinMarketCap.ticker();
  // bittrex();
  // livecoin();
