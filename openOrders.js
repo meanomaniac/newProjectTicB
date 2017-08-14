@@ -107,12 +107,12 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         console.log('get in openOrders for exchange: '+exchange+', failed: ');
         console.log(tradePairArr[iterator]);
         console.log(error);
-        console.log(body);
-      }
-      if (iterator<tradePairArr.length-1) {
-        getOpenOrders (exchange, tradePairArr, iterator);
+        //console.log(body);
       }
     });
+    if (iterator<tradePairArr.length-1) {
+      getOpenOrders (exchange, tradePairArr, iterator);
+    }
 }
 
 module.exports = {getOpenOrders};

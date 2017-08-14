@@ -49,4 +49,4 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
 
 // stdGetPublicData.ticker('cryptopia', {}, 0.1, tickerDBColumns);
 // stdGetPublicData2.getAllMarkets('yoBit', {}, 0.1, tickerDBColumns);
-// coinExchange.coinExchangeMarkets({}, 0.1, tickerDBColumns);
+ coinExchange.coinExchangeMarkets({}, 0.1, tickerDBColumns);

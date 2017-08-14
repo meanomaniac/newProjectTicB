@@ -98,12 +98,12 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     else {
       console.log('get in orderHistory failed: ');
       console.log(tradePairArr[iterator]);
-      console.log(body);
+      console.log(error);
     }
+    });
     if (iterator<tradePairArr.length-1) {
         getOrderHistory (exchange, tradePairArr, iterator);
       }
-    });
   }
 
     module.exports = {getOrderHistory};
