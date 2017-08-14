@@ -3,6 +3,7 @@ var fs = require('fs');
 var coinExchange = require('./coinExchange.js');
 var stdGetPublicData = require('./stdGetPublicData.js');
 var stdGetPublicData2 = require('./stdGetPublicData2.js');
+var exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
 var thirtySecThreshold = 0.1,
 fiveMinThreshold = 0.0001;
@@ -28,25 +29,31 @@ var setIntervalSynchronous = function (func, delay) {
 // writeAllQualifiedMarketsToDB (30000, thirtySecThreshold);
 // writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);
 
-function returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, functionIteration) {
-  functionIteration++;
-  // use functionIteration to loop through all exchangeObjs and perform the following
-  // cryptopia.ticker(cryptopia, exchangeObjs.cryptopia, changeThreshold);
-  newTickerObj = exchange();
-
-  // got to the next exchange by recursively calling the same function itself like below
-  if (functionIteration < (exchanges.length -1)) {
-    returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, functionIteration);
-  }
-}
-
 function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
-  var coinMarketCapObj, bittrexObj, livecoinObj, cryptopiaObj, novaexchangeObj, hitBTCObj, yoBitObj, poloniexObj, coinExchangeObj;
+  var coinMarketCapObj = {}, bittrexObj = {}, livecoinObj = {}, cryptopiaObj = {}, novaexchangeObj = {},
+  hitBTCObj = {}, yoBitObj = {}, poloniexObj = {}, coinExchangeObj = {};
   var exchangeObjs = [coinMarketCapObj, bittrexObj, livecoinObj, cryptopiaObj, novaexchangeObj, hitBTCObj, yoBitObj, poloniexObj, coinExchangeObj];
-  setIntervalSynchronous (function (exchangeObjs, changeThreshold, marketsWritableToDB) {
-    returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
+  setIntervalSynchronous (function (exchangeObjs, changeThreshold) {
+    getAllMarketInfo (exchangeObjs, changeThreshold);}, timeGap);
 }
 
-// stdGetPublicData.ticker('cryptopia', {}, 0.1, tickerDBColumns);
-// stdGetPublicData2.getAllMarkets('yoBit', {}, 0.1, tickerDBColumns);
- coinExchange.coinExchangeMarkets({}, 0.1, tickerDBColumns);
+function getAllMarketInfo (exchangeObjs, changeThreshold) {
+  for (var i=0; i<exchangeList.length; i++) {
+    switch (exchangeList[i]) {
+      case 'cryptopia':
+      case 'hitBTC':
+      case 'livecoin':
+      case 'poloniex':
+      case 'novaexchange':
+      case 'coinMarketCap':
+        exchangeObjs[i] = stdGetPublicData.ticker(exchangeList[i], exchangeObjs[i], changeThreshold, tickerDBColumns); break;
+      case 'yoBit':
+      case 'bittrex':
+        exchangeObjs[i] = stdGetPublicData2.getAllMarkets(exchangeList[i], exchangeObjs[i], changeThreshold, tickerDBColumns); break
+      case 'coinExchange':
+        exchangeObjs[i] = coinExchange.coinExchangeMarkets(exchangeObjs[i], changeThreshold, tickerDBColumns); break;
+      default:
+        break;
+    }
+  }
+ }

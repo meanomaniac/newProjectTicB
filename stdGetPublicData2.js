@@ -46,8 +46,8 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
     if (getTickerCount>=markets.length-1) {
       newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
-      return newTickerObj;
       getTickerCount = -1;
+      return newTickerObj;
     }
   }, true);
 
