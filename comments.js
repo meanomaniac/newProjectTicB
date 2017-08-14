@@ -1,3 +1,11 @@
+// orderHistory.getOrderHistory('cryptopia', ['DOT_BTC'], -1);
+// orderHistory.getOrderHistory('bittrex', ['BTC-LTC'], -1);
+// orderHistory.getOrderHistory('hitBTC', ['BCNBTC'], -1);
+// orderHistory.getOrderHistory('livecoin', ['BTC/USD'], -1);
+// orderHistory.getOrderHistory('poloniex', ['BTC_ETH'], -1);
+// orderHistory.getOrderHistory('yoBit', ['eth_btc'], -1);
+// coinExchange.getOrderHistory(['87'], -1);
+// orderHistory.getOrderHistory('novaexchange', ['BTC_LTC'], -1);
 
 // openOrders.getOpenOrders('cryptopia', ['ZSE_BTC'], -1);
 // openOrders.getOpenOrders('bittrex', ['BTC-LTC'], -1);

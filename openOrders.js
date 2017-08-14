@@ -47,6 +47,7 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
               buyLoopVar = (returnObj2[tradePairArr[iterator]]).bids; sellLoopVar = (returnObj2[tradePairArr[iterator]]).asks; break;
           default: break;
         }
+        //console.log(typeof(buyLoopVar) + tradePairArr[iterator]);
           for (var i in buyLoopVar) {
            switch (exchange) {
              case 'cryptopia':
@@ -91,6 +92,12 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
       if (sellArray.length == 0) {
         sellArray.push(0);
       }
+      if (!buyLoopVar) {
+        buyLoopVar = [];
+      }
+      if (!sellLoopVar) {
+        sellLoopVar = [];
+      }
       var timeNow = new Date();
       createDataObjects.returnopenOrdersObj(exchange, tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
                                       buyLoopVar.length, totalBuyAmount, Math.max.apply(Math, sellArray),
@@ -103,7 +110,7 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         console.log(body);
       }
       if (iterator<tradePairArr.length-1) {
-        openOrders (exchange, tradePairArr, iterator);
+        getOpenOrders (exchange, tradePairArr, iterator);
       }
     });
 }

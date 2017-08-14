@@ -1,19 +1,8 @@
 
 var fs = require('fs');
-var coinMarketCap = require('./tickerFiles/coinMarketCap.js');
-var bittrex = require('./tickerFiles/bittrex.js');
-var livecoin = require('./tickerFiles/livecoin.js');
-var cryptopia = require('./tickerFiles/cryptopia.js');
-var novaexchange = require('./tickerFiles/novaexchange.js');
-var hitBTC = require('./tickerFiles/hitBTC.js');
-var yoBit = require('./tickerFiles/yoBit.js');
-var poloniex = require('./tickerFiles/poloniex.js');
 var coinExchange = require('./coinExchange.js');
 var stdGetPublicData = require('./stdGetPublicData.js');
 var stdGetPublicData2 = require('./stdGetPublicData2.js');
-var openOrders = require('./openOrders.js');
-var orderHistory = require('./orderHistory.js');
-var exchanges = [coinMarketCap, bittrex, livecoin, cryptopia, novaexchange, hitBTC, yoBit, poloniex, coinExchange];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
 var thirtySecThreshold = 0.1,
 fiveMinThreshold = 0.0001;
@@ -58,11 +47,6 @@ function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
     returnMarketsWithBigChange (exchangeObjs, changeThreshold, marketsWritableToDB, -1);}, timeGap);
 }
 
-// orderHistory.getOrderHistory('cryptopia', ['DOT_BTC'], -1);
-// orderHistory.getOrderHistory('bittrex', ['BTC-LTC'], -1);
-// orderHistory.getOrderHistory('hitBTC', ['BCNBTC'], -1);
-// orderHistory.getOrderHistory('livecoin', ['BTC/USD'], -1);
-// orderHistory.getOrderHistory('poloniex', ['BTC_NXT'], -1);
-// orderHistory.getOrderHistory('yoBit', ['eth_btc'], -1);
-// coinExchange.getOrderHistory(['87'], -1);
-// orderHistory.getOrderHistory('novaexchange', ['BTC_LTC'], -1);
+// stdGetPublicData.ticker('cryptopia', {}, 0.1, tickerDBColumns);
+// stdGetPublicData2.getAllMarkets('yoBit', {}, 0.1, tickerDBColumns);
+// coinExchange.coinExchangeMarkets({}, 0.1, tickerDBColumns);

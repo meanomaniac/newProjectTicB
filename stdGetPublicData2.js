@@ -2,6 +2,7 @@ var request =require('request'), fs = require('fs'), createDataObjects = require
 qualifyData = require('./qualifyData.js');
 var markets = [];
 var newTickerObj = {};
+var getTickerCount = -1;
 
 function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
   switch (exchange) {
@@ -39,11 +40,14 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
       else {
         console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
       }
+      //console.log(markets[arrayIndex]);
     }
-    if (arrayIndex>=markets.length-1) {
+    getTickerCount++;
+    if (getTickerCount>=markets.length-1) {
       newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
       return newTickerObj;
+      getTickerCount = -1;
     }
   }, true);
 

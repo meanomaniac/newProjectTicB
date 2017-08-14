@@ -22,7 +22,7 @@ module.exports = poloniexTicker;
 
 /*
 open orders/order book
-https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_NXT
+https://poloniex.com/public?command=returnOrderBook&curterencyPair=BTC_NXT
 https://poloniex.com/public?command=returnOrderBook&currencyPair=BTC_NXT&depth=10
 
 order history

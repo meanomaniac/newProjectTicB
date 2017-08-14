@@ -11,19 +11,20 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     }
   }
   var dayOldUTCEpoch = parseInt(((new Date()).getTime()-(3600000*24))/1000);
+  var nowUTCEpoch = parseInt(((new Date()).getTime())/1000);
   switch (exchange) {
     case 'cryptopia':
         openOrdersUrl = 'https://www.cryptopia.co.nz/api/GetMarketHistory/'+tradePairArr[iterator]+'/'; break;
     case 'bittrex':
         openOrdersUrl = 'https://bittrex.com/api/v1.1/public/getmarkethistory?market='+tradePairArr[iterator]; break;
     case 'hitBTC':
-        openOrdersUrl = 'https://api.hitbtc.com/api/1/public/'+tradePairArr[iterator]+'/trades?from='+dayOldUTCEpoch+'&by=ts'; break;
+        openOrdersUrl = 'https://api.hitbtc.com/api/1/public/'+tradePairArr[iterator]+'/trades?from='+(dayOldUTCEpoch*1000)+'&by=ts'; break;
     case 'livecoin':
         openOrdersUrl = 'https://api.livecoin.net/exchange/last_trades?currencyPair='+tradePairArr[iterator]+'&minutesOrHour=false'; break;
     case 'poloniex':
-        openOrdersUrl = 'https://poloniex.com/public?command=returnOrderBook&currencyPair='+tradePairArr[iterator]; break;
+        openOrdersUrl = 'https://poloniex.com/public?command=returnTradeHistory&currencyPair='+tradePairArr[iterator]+'&start='+dayOldUTCEpoch+'&end='+nowUTCEpoch; break;
     case 'yoBit':
-        openOrdersUrl = 'https://yobit.net/api/3/depth/'+tradePairArr[iterator]; break;
+        openOrdersUrl = 'https://yobit.net/api/3/trades/'+tradePairArr[iterator]; break;
     case 'novaexchange':
         openOrdersUrl = 'https://novaexchange.com/remote/v2/market/orderhistory/'+tradePairArr[iterator]+'/'; break;
     default: break;
@@ -39,6 +40,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         case 'bittrex':
             buyLoopVar = returnObj3.result; buyCondition = 'BUY';  sellCondition = 'SELL'; break;
         case 'poloniex':
+            buyLoopVar = returnObj3; buyCondition = 'buy';  sellCondition = 'sell'; break;
         case 'livecoin':
             buyLoopVar = returnObj3; buyCondition = 'BUY';  sellCondition = 'SELL'; break;
         case 'hitBTC':
@@ -46,7 +48,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         case 'novaexchange':
             buyLoopVar = returnObj3.items; buyCondition = 'BUY';  sellCondition = 'SELL'; break;
         case 'yoBit':
-            buyLoopVar = (returnObj2[tradePairArr[iterator]]).bids; sellLoopVar = (returnObj2[tradePairArr[iterator]]).asks; break;
+            buyLoopVar = returnObj3[tradePairArr[iterator]]; buyCondition = 'bid';  sellCondition = 'ask'; break;
         default: break;
       }
         for (var i in buyLoopVar) {
@@ -56,14 +58,15 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
             case 'bittrex':
                 buyObj = returnObj3.result[i].Total; orderType = returnObj3.result[i].OrderType; break;
             case 'poloniex':
+                buyObj = returnObj3[i].total; orderType = returnObj3[i].type; break;
             case 'livecoin':
-                buyObj = Number((returnObj3[i])['price'])*Number((returnObj3[i])['quantity']); orderType = (returnObj3[i])['type']; break;
+                buyObj = Number((returnObj3[i])['quantity'])*Number((returnObj3[i])['price']); orderType = (returnObj3[i])['type']; break;
             case 'hitBTC':
                 buyObj = Number(returnObj3.trades[i][1])*Number(returnObj3.trades[i][2]); orderType = true; break;
             case 'novaexchange':
-                buyObj = Number((returnObj3.items[i])['baseamount'])*Number((returnObj3.items[i])['price']); orderType = (returnObj3.items[i])['tradetype']; break;
+                buyObj = Number((returnObj3.items[i])['baseamount']); orderType = (returnObj3.items[i])['tradetype']; break;
             case 'yoBit':
-                buyObj = Number((returnObj2[tradePairArr[iterator]].bids[i])[0])*Number((returnObj2[tradePairArr[iterator]].bids[i])[1]); break;
+                buyObj = Number((returnObj3[tradePairArr[iterator]][i].price))*Number((returnObj3[tradePairArr[iterator]][i].amount)); orderType = returnObj3[tradePairArr[iterator]][i].type; break;
             default: break;
           }
          if (orderType == buyCondition && buyObj != 0) {
@@ -81,6 +84,12 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
       if (sellArray.length == 0) {
         sellArray.push(0);
       }
+      if (!buyArray) {
+        buyArray = [];
+      }
+      if (!sellArray) {
+        sellArray = [];
+      }
       var timeNow = new Date();
       createDataObjects.returnHistoryObj(exchange, tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
                                     buyArray.length, totalBuyAmount, Math.max.apply(Math, sellArray),
@@ -92,9 +101,9 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
       console.log(body);
     }
     if (iterator<tradePairArr.length-1) {
-      getOrderHistory (exchange, tradePairArr, iterator);
-    }
-  });
-    }
+        getOrderHistory (exchange, tradePairArr, iterator);
+      }
+    });
+  }
 
     module.exports = {getOrderHistory};

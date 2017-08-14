@@ -72,9 +72,11 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns) {
 
 function getOpenOrders (tradePairArr, iterator) {
   iterator++;
+  var tradePair = tradePairArr[iterator];
+  tradePair = (tradePair.split("::"))[1];
   var options = {
     method: 'GET',
-    uri: 'https://www.coinexchange.io/api/v1/getorderbook?market_id='+tradePairArr[iterator],
+    uri: 'https://www.coinexchange.io/api/v1/getorderbook?market_id='+tradePair,
     headers: { 'User-Agent': 'test' },
     json: true
   }
@@ -82,6 +84,7 @@ function getOpenOrders (tradePairArr, iterator) {
   rp(options)
     .then(body => {
         var returnObj2 = body;
+      //  console.log(returnObj2);
         var buyLoopVar = returnObj2.result.BuyOrders; var sellLoopVar = returnObj2.result.SellOrders;
         var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
           for (var i in buyLoopVar) {
@@ -101,20 +104,50 @@ function getOpenOrders (tradePairArr, iterator) {
         sellArray.push(0);
       }
       var timeNow = new Date();
-      createDataObjects.returnopenOrdersObj('coinExchange', tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
+      createDataObjects.returnopenOrdersObj('coinExchange', tradePair, Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
                                       buyLoopVar.length, totalBuyAmount, Math.max.apply(Math, sellArray),
                                       Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
       if (iterator<tradePairArr.length-1) {
-        openOrders (exchange, tradePairArr, iterator);
+        getOpenOrders (tradePairArr, iterator);
       }
   })
   .catch(e => {
-    console.log('error in coinexchange ticker');
+    console.log('error in coinexchange open orders');
     console.log(e);
   })
 }
 
-module.exports = {coinExchangeMarkets, getOpenOrders};
+
+function getOrderHistory (tradePairArr, iterator) {
+  iterator++;
+  var tradePair = tradePairArr[iterator];
+  tradePair = (tradePair.split("::"))[1];
+  var options = {
+    method: 'GET',
+    uri: 'https://www.coinexchange.io/api/v1/getmarketsummary?market_id='+tradePair,
+    headers: { 'User-Agent': 'test' },
+    json: true
+  }
+
+  rp(options)
+    .then(body => {
+          var returnObj3 = body;
+          var timeNow = new Date();
+          createDataObjects.returnHistoryObj('coinExchange', tradePair, 0, 0,
+                                        returnObj3.result.BuyOrderCount, returnObj3.result.BTCVolume, 0,
+                                        0, returnObj3.result.SellOrderCount, 0, timeNow);
+        if (iterator<tradePairArr.length-1) {
+            getOrderHistory (tradePairArr, iterator);
+          }
+  })
+  .catch(e => {
+    console.log('error in coinexchange order history');
+    console.log(e);
+  })
+}
+
+
+module.exports = {coinExchangeMarkets, getOpenOrders, getOrderHistory};
 
 /*
 current orders:
