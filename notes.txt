@@ -1,3 +1,60 @@
+API limits:
+1) hitBTC - no limits
+2) Cryptopia - nothing mentioned
+3) Poloniex - 6 calls per second for Trading APIs only, but github posts point to all APIs
+4) Novaexchange - nothing mentioned
+5) coinMarketCap - Please limit requests to no more than 10 per minute. Endpoints update every 5 minutes.
+6) yoBit - Server responses are cashed every 2 seconds that is why there is no sense in making requests faster.
+7)coinExchange - nothing mentioned
+
+8) bittrex - We are currently restricting orders to 500 open orders and 200,000 orders a day (older doc apparently from
+stackexchange question: Low: 1 request per second, Medium: 1 request per 10 seconds, High: 1 request per 30 seconds,
+Answer: bittrex-bill: It varies by API call. If you hit the limit, you are abusing it. If you hit the limit a lot, you risk getting banned :)
+Some user: Is greater than 1 minute consistently 24/7 within an acceptable use?
+bittrex-bill: yes,
+suggestion - try to cap the requests around 1 request per minute per API method)
+
+9) livecoin - The following restrictions are applied for API calls:
+1. Only 60 API calls (any calls) are allowed over a period of 60 seconds from one IP address.
+2. Only 10 simultaneous API calls for opening/cancelling orders are allowed. Points system is applied for operating with API.
+You start with 0 points. New order or cancelling existing one are increasing your counter to 1 point.
+Maximum allowed points is 10, when it reaches 11 points, your API will be locked for 2 seconds to allow counter to drop to 10 points.
+Every 2 seconds your counter drops by 1 point. Nonetheless, if you have reached 11 points and do not do new calls,
+your counter will drop to 0 for 10 seconds.
+Please keep in mind that we block IP for 20 minutes in case of violating limits - 60 calls per 60 seconds.
+All calls are to be counted, private and public. IP will be automatically unlocked after 20 minutes.
+
+/*
+var setIntervalSynchronous = function (func, delay) {
+  var intervalFunction, timeoutId, clear;
+  // Call to clear the interval.
+  clear = function () {
+    clearTimeout(timeoutId);
+  };
+  intervalFunction = function () {
+    func();
+    timeoutId = setTimeout(intervalFunction, delay);
+  }
+  // Delay start.
+  timeoutId = setTimeout(intervalFunction, delay);
+  // You should capture the returned function for clearing.
+  return clear;
+};
+
+//writeAllQualifiedMarketsToDB (5000, thirtySecThreshold);
+// writeAllQualifiedMarketsToDB (300000, fiveMinThreshold);
+
+
+function writeAllQualifiedMarketsToDB (timeGap, changeThreshold) {
+  var coinMarketCapObj = {}, bittrexObj = {}, livecoinObj = {}, cryptopiaObj = {}, novaexchangeObj = {},
+  hitBTCObj = {}, yoBitObj = {}, poloniexObj = {}, coinExchangeObj = {};
+  // var exchangeObjs = [coinMarketCapObj, bittrexObj, livecoinObj, cryptopiaObj, novaexchangeObj, hitBTCObj, yoBitObj, poloniexObj, coinExchangeObj];
+  var exchangeObjs = [hitBTCObj];
+  setIntervalSynchronous (function () {
+    getAllMarketInfo (exchangeObjs, changeThreshold);}, timeGap);
+}
+*/
+
 // orderHistory.getOrderHistory('cryptopia', ['DOT_BTC'], -1);
 // orderHistory.getOrderHistory('bittrex', ['BTC-LTC'], -1);
 // orderHistory.getOrderHistory('hitBTC', ['BCNBTC'], -1);

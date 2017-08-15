@@ -31,7 +31,6 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
   }
   request(openOrdersUrl, function (error, response, body) {
     if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
-    //  console.log('orderHistory entered');
       var returnObj3 = (JSON.parse(body));
       var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
       switch (exchange) {
@@ -96,13 +95,13 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
                                     Math.min.apply(Math, sellArray), sellArray.length, totalSellAmount, timeNow);
     }
     else {
-      console.log('get in orderHistory failed: ');
+      console.log('get in orderHistory for exchange '+exchange+' failed: ');
       console.log(tradePairArr[iterator]);
       console.log(error);
     }
     });
     if (iterator<tradePairArr.length-1) {
-        getOrderHistory (exchange, tradePairArr, iterator);
+        setTimeout(function () {getOrderHistory (exchange, tradePairArr, iterator);}, 200);
       }
   }
 

@@ -104,14 +104,13 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
                                       Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
       }
       else {
-        console.log('get in openOrders for exchange: '+exchange+', failed: ');
+        console.log('get in openOrders for exchange '+exchange+' failed: ');
         console.log(tradePairArr[iterator]);
         console.log(error);
-        //console.log(body);
       }
     });
     if (iterator<tradePairArr.length-1) {
-      getOpenOrders (exchange, tradePairArr, iterator);
+      setTimeout(function () {getOpenOrders (exchange, tradePairArr, iterator);}, 200);
     }
 }
 

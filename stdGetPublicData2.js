@@ -4,7 +4,10 @@ var markets = [];
 var newTickerObj = {};
 var getTickerCount = -1;
 
-function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
+function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
+  if (counter == -1) {
+    console.log('ticker iteration begins for '+exchange);
+  }
   switch (exchange) {
     case 'bittrex':
       tickerUrl = 'https://bittrex.com/api/v1.1/public/getticker?market='; break;
@@ -40,23 +43,26 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
       else {
         console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
       }
-      //console.log(markets[arrayIndex]);
     }
     getTickerCount++;
     if (getTickerCount>=markets.length-1) {
       newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
       getTickerCount = -1;
-      return newTickerObj;
+      oldTickerObj = newTickerObj;
+      setTimeout(function() {
+        getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
+      //return newTickerObj;
     }
   }, true);
 
   if (arrayIndex<markets.length-1) {
-    getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns);
+    getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
   }
 }
 
-function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
+function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
   switch (exchange) {
     case 'bittrex':
       marketUrl = 'https://bittrex.com/api/v1.1/public/getmarkets'; break;
@@ -79,7 +85,6 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
           break;
       }
       for (var i in marketLoopArr) {
-        // Also add logic to delete the corresponding db table and copy these new markets instead
         switch (exchange) {
           case 'bittrex':
             marketObj = data.result[i].MarketName; break;
@@ -95,22 +100,9 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
       }
     }
     markets = newMarkets;
-    // console.log("total markets count: "+count);
-    // console.log("markets array: "+markets);
-    getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns);
+    getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
   }, true);
 }
 
 
 module.exports = {getAllMarkets};
-
-/*
-// orders
-https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC
-https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC/50
-
-
-history - default 24 hours
-https://www.cryptopia.co.nz/api/GetMarketHistory/DOT_BTC/
-https://www.cryptopia.co.nz/api/GetMarketHistory/DOT_BTC/48
-*/

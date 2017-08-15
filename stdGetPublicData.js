@@ -1,7 +1,8 @@
 var request =require('request'), fs = require('fs'), createDataObjects = require('./createDataObjects.js'),
 qualifyData = require('./qualifyData.js');
 
-function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
+function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
+  console.log('ticker iteration begins for '+exchange);
   var newTickerObj = {};
     switch (exchange) {
       case 'cryptopia':
@@ -59,6 +60,7 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
 
             if (tickerLoopArr[i] != null && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
               var marketLabel = labelObj;
+              // console.log('old ticker obj: '); console.log(oldTickerObj);
               if (oldTickerObj.marketLabel != undefined) {
                 var oldTrackingStatus = oldTickerObj.marketLabel.trackingStatus;
               }
@@ -75,13 +77,11 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
       if (exchange != 'coinMarketCap') {
         newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
       }
-      /*
-      fs.appendFile("/Users/akhilkamma/Desktop/DEV/newProjectTicB/sampleOutput/ticker2/Cryptopia2.txt", " "+JSON.stringify(newTickerObj), function(err) {
-         if(err) { return console.log(err); }
-     });
-     */
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
-      return newTickerObj;
+      oldTickerObj = newTickerObj;
+      setTimeout(function() {
+        ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
     }
     else {
       console.log(body);
@@ -90,14 +90,3 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns) {
 }
 
 module.exports = {ticker};
-
-/*
-// orders
-https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC
-https://www.cryptopia.co.nz/api/GetMarketOrders/DOT_BTC/50
-
-
-history - default 24 hours
-https://www.cryptopia.co.nz/api/GetMarketHistory/DOT_BTC/
-https://www.cryptopia.co.nz/api/GetMarketHistory/DOT_BTC/48
-*/
