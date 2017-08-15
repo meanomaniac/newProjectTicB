@@ -5,14 +5,15 @@ var fs = require('fs');
 var coinExchange = require('./coinExchange.js');
 var stdGetPublicData = require('./stdGetPublicData.js');
 var stdGetPublicData2 = require('./stdGetPublicData2.js');
-//var exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'];
-var exchangeList = ['hitBTC', 'yoBit', 'coinExchange'];
-var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus'];
-var thirtySecThreshold = 0.1,
+var exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'];
+//var exchangeList = ['hitBTC', 'yoBit', 'coinExchange'];
+//var exchangeList = ['yoBit'];
+var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'];
+var thirtySecThreshold = 0.5,
 fiveMinThreshold = 0.0001;
 var cmcUSDBTC;
 
-getAllMarketInfo(5000, thirtySecThreshold);
+getAllMarketInfo(30000, thirtySecThreshold);
 
 function getAllMarketInfo (timeGap, changeThreshold) {
   for (i=0; i<exchangeList.length; i++) {

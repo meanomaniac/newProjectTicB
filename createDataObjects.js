@@ -29,7 +29,7 @@ var returnCompleteTickerObj = function (tickerObj, oldTickerObj, timeVar) {
     for (var arrayIndex in tickerObj) {
       tickerObj[arrayIndex].SPUSD = tickerObj.USD_BTC.SPBTC * tickerObj[arrayIndex].SPBTC;
     }
-  console.log('ticker iteration tracking status: '+(tickerObj[Object.keys(tickerObj)[0]]).trackingStatus)
+  //console.log('ticker iteration tracking status: '+(tickerObj[Object.keys(tickerObj)[0]]).trackingStatus)
   oldTickerObj = tickerObj;
   return tickerObj;
 }

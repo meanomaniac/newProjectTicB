@@ -13,8 +13,8 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
     if (table == 'cTicker') {
       var dbtradePair = objArr[iterator].tradePair || "null", dbaskPriceUSD = objArr[iterator].SPUSD || -1,
       dbaskPriceBTC = objArr[iterator].SPBTC || -1, dbrecordTime = objArr[iterator].time || "null",
-      dbtrackingStatus = objArr[iterator].trackingStatus || -1;
-      queryParameters.push(exchange, dbtradePair,dbaskPriceUSD,dbaskPriceBTC,dbrecordTime,dbtrackingStatus);
+      dbtrackingStatus = objArr[iterator].trackingStatus || -1, dbpriceChange = objArr[iterator].priceChange;
+      queryParameters.push(exchange, dbtradePair,dbaskPriceUSD,dbaskPriceBTC,dbrecordTime,dbtrackingStatus,dbpriceChange);
     }
     else if (table == 'openOrders' || table == 'orderHistory') {
       var dbtradePair = objArr[iterator].tradePair || "null", dbmaxBuy = objArr[iterator].maxBuy || -1,
@@ -39,7 +39,7 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
     // console.log(query);
   con.query(query, queryParameters, function (err, result) {
     if (err) {
-      //console.log("dbError: "+err);
+      console.log("dbError: "+err);
     };
     if (iterator < objArr.length -1) {
       writeToDB(table, exchange, columnsArr, objArr, iterator);

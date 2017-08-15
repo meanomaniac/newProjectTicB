@@ -4,7 +4,7 @@ var coinExchangeMarketMap = {};
 var newTickerObj = {};
 
 function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
-  console.log('ticker iteration begins for coinExchange');
+  // console.log('ticker iteration begins for coinExchange');
   var options = {
     method: 'GET',
     uri: 'https://www.coinexchange.io/api/v1/getmarketsummaries',

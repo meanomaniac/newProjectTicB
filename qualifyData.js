@@ -11,13 +11,16 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
     var priceDiff;
     if (oldTickerObj[arrayIndex] != undefined) {
       priceDiff = Math.abs((newTickerObj[arrayIndex].SPBTC-oldTickerObj[arrayIndex].SPBTC)/oldTickerObj[arrayIndex].SPBTC);
+      newTickerObj[arrayIndex].priceChange = priceDiff;
+      //console.log('price diff: '+priceDiff);
     }
     else {
       //priceDiff = 10000;
       priceDiff = 0;
+      newTickerObj[arrayIndex].priceChange = priceDiff;
     }
-    //if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold) {
-    if (priceDiff > changeThreshold) {
+    if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold) {
+    //if (priceDiff > changeThreshold) {
       dbArray.push(newTickerObj[arrayIndex]);
       if (changeThreshold >= 0.1) {
         marketDataArray.push(newTickerObj[arrayIndex].tradePair);

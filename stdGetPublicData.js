@@ -2,7 +2,7 @@ var request =require('request'), fs = require('fs'), createDataObjects = require
 qualifyData = require('./qualifyData.js');
 
 function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
-  console.log('ticker iteration begins for '+exchange);
+  //console.log('ticker iteration begins for '+exchange);
   var newTickerObj = {};
     switch (exchange) {
       case 'cryptopia':
@@ -83,7 +83,8 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
       }, timeGap);
     }
     else {
-      console.log(body);
+      console.log('ticker for exchange '+exchange+' failed');
+      console.log(error);
     }
   });
 }

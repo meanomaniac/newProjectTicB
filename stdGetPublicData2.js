@@ -6,7 +6,7 @@ var getTickerCount = -1;
 
 function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
   if (counter == -1) {
-    console.log('ticker iteration begins for '+exchange);
+    //console.log('ticker iteration begins for '+exchange);
   }
   switch (exchange) {
     case 'bittrex':
@@ -42,6 +42,13 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
       }
       else {
         console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
+      }
+    }
+    else {
+      //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'"))) {
+      if (error && exchange != 'yoBit') {
+        console.log('ticker for exchange '+exchange+' failed');
+        console.log(error);
       }
     }
     getTickerCount++;
@@ -98,6 +105,10 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
           count++;
         }
       }
+    }
+    else {
+        console.log('getMarketList for exchange '+exchange+' failed');
+        console.log(error);
     }
     markets = newMarkets;
     getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
