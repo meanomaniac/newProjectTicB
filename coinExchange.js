@@ -20,11 +20,11 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
          }
          for (var arrayIndex in returnObj) {
          if (returnObj[arrayIndex] != null) {
-           if (oldTickerObj.marketLabel != undefined) {
-             var oldTrackingStatus = oldTickerObj.marketLabel.trackingStatus;
+           if ((Object.keys(oldTickerObj)).length == 0) {
+             var oldTrackingStatus = 0;
            }
            else {
-             var oldTrackingStatus = 0;
+             var oldTrackingStatus = (oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus;
            }
            newTickerObj = createDataObjects.createTickerObj('coinExchange', newTickerObj, (coinExchangeMarketMap[returnObj[arrayIndex].MarketID]+'::'+returnObj[arrayIndex].MarketID), returnObj[arrayIndex].AskPrice, timeNow, oldTrackingStatus);
          }

@@ -32,11 +32,11 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
             break;
         }
       if (tickerConditionalObj1 != null && tickerConditionalObj2 != null) {
-        if (oldTickerObj.marketLabel != undefined) {
-          var oldTrackingStatus = oldTickerObj.marketLabel.trackingStatus;
+        if ((Object.keys(oldTickerObj)).length == 0) {
+          var oldTrackingStatus = 0;
         }
         else {
-          var oldTrackingStatus = 0;
+          var oldTrackingStatus = (oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus;
         }
         newTickerObj = createDataObjects.createTickerObj(exchange, newTickerObj, markets[arrayIndex], btcPriceObj, timeNow, oldTrackingStatus);
       }

@@ -60,12 +60,11 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
 
             if (tickerLoopArr[i] != null && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
               var marketLabel = labelObj;
-              // console.log('old ticker obj: '); console.log(oldTickerObj);
-              if (oldTickerObj.marketLabel != undefined) {
-                var oldTrackingStatus = oldTickerObj.marketLabel.trackingStatus;
+              if ((Object.keys(oldTickerObj)).length == 0) {
+                var oldTrackingStatus = 0;
               }
               else {
-                var oldTrackingStatus = 0;
+                var oldTrackingStatus = (oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus;
               }
               newTickerObj = createDataObjects.createTickerObj(exchange, newTickerObj, labelObj, btcPriceObj, timeNow, oldTrackingStatus);
               if (exchange == 'coinMarketCap') {

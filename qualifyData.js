@@ -13,15 +13,15 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
       priceDiff = Math.abs((newTickerObj[arrayIndex].SPBTC-oldTickerObj[arrayIndex].SPBTC)/oldTickerObj[arrayIndex].SPBTC);
     }
     else {
-      priceDiff = 10000;
+      //priceDiff = 10000;
+      priceDiff = 0;
     }
-    if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold) {
+    //if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold) {
+    if (priceDiff > changeThreshold) {
       dbArray.push(newTickerObj[arrayIndex]);
       if (changeThreshold >= 0.1) {
-      //  console.log('trade pair '+newTickerObj[arrayIndex].tradePair+' added');
         marketDataArray.push(newTickerObj[arrayIndex].tradePair);
       }
-      // result[0][Object.keys(result[0])[2]]
     }
   }
   if (dbArray.length > 0) {
