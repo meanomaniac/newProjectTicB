@@ -9,8 +9,7 @@ var exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaex
 //var exchangeList = ['hitBTC', 'yoBit', 'coinExchange'];
 //var exchangeList = ['yoBit'];
 var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'];
-var thirtySecThreshold = 0.5,
-fiveMinThreshold = 0.0001;
+var thirtySecThreshold = 0.01;
 var cmcUSDBTC;
 
 getAllMarketInfo(30000, thirtySecThreshold);

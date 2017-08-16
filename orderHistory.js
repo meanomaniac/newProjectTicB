@@ -95,7 +95,8 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
                                     Math.min.apply(Math, sellArray), sellArray.length, totalSellAmount, timeNow);
     }
     else {
-      console.log('get in orderHistory for exchange '+exchange+' failed');
+      var errTime = new Date();
+      console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
       console.log(tradePairArr[iterator]);
       console.log(error);
     }

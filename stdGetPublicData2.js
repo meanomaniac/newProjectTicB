@@ -47,7 +47,8 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
     else {
       //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'"))) {
       if (error && exchange != 'yoBit') {
-        console.log('ticker for exchange '+exchange+' failed');
+        var errTime = new Date();
+        console.log('ticker for exchange '+exchange+' failed at '+errTime);
         console.log(error);
       }
     }
@@ -107,7 +108,8 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
       }
     }
     else {
-        console.log('getMarketList for exchange '+exchange+' failed');
+        var errTime = new Date();
+        console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
         console.log(error);
     }
     markets = newMarkets;
