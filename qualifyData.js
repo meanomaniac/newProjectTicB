@@ -33,7 +33,7 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
 
   if (marketDataArray.length > 0) {
     //console.log('writing specifc records to order tables');
-    if (exchange != 'coinMarketCap' && exchange != 'coinExchange') {
+    if (exchange != 'coinMarketCap' && exchange != 'coinExchange' && exchange != 'poloniex') {
       openOrders.getOpenOrders(exchange, marketDataArray, -1);
       orderHistory.getOrderHistory(exchange, marketDataArray, -1);
     }

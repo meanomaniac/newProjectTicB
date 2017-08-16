@@ -35,7 +35,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         var returnObj3 = (JSON.parse(body));
       }
       catch(e) {
-        console.log('error getting response from '+exchange);
+        console.log('error getting history response from '+exchange+' for the tradepair '+tradePairArr[iterator]);
         console.log(e);
         return;
       }
