@@ -31,7 +31,14 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
   }
   request(openOrdersUrl, function (error, response, body) {
     if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
-      var returnObj3 = (JSON.parse(body));
+      try {
+        var returnObj3 = (JSON.parse(body));
+      }
+      catch(e) {
+        console.log('error getting response from '+exchange);
+        console.log(e);
+        return;
+      }
       var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
       switch (exchange) {
         case 'cryptopia':
