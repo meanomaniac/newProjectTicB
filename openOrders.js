@@ -108,7 +108,7 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         var errTime = new Date();
         console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
         console.log(tradePairArr[iterator]);
-        console.log(error);
+        //console.log(error);
       }
     });
     if (iterator<tradePairArr.length-1) {

@@ -85,7 +85,7 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
     else {
       var errTime = new Date();
       console.log('ticker for exchange '+exchange+' failed at '+errTime);
-      console.log(error);
+      //console.log(error);
     }
   });
 }

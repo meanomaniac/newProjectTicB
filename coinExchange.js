@@ -38,7 +38,7 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
     .catch(e => {
       var errTime = new Date();
       console.log('error in coinexchange ticker at '+errTime);
-      console.log(e);
+      //console.log(e);
     })
 }
 
@@ -70,7 +70,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
     .catch(e => {
       var errTime = new Date();
       console.log('error in coinexchange markets at '+errTime);
-      console.log(e);
+      //console.log(e);
     })
 }
 
@@ -117,7 +117,7 @@ function getOpenOrders (tradePairArr, iterator) {
   .catch(e => {
     var errTime = new Date();
     console.log('error in coinexchange open orders at '+errTime);
-    console.log(e);
+    //console.log(e);
   })
 }
 
@@ -147,7 +147,7 @@ function getOrderHistory (tradePairArr, iterator) {
   .catch(e => {
     var errTime = new Date();
     console.log('error in coinexchange order history at '+errTime);
-    console.log(e);
+    //console.log(e);
   })
 }
 
