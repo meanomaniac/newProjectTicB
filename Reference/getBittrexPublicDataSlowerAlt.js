@@ -1,21 +1,26 @@
-var request =require('request'), fs = require('fs'), createDataObjects = require('./createDataObjects.js'),
-qualifyData = require('./qualifyData.js');
+var fs = require('fs'), createDataObjects = require('./createDataObjects.js'), qualifyData = require('./qualifyData.js');
+var rp = require('request-promise'), request =require('request');
 
 function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj) {
   var tickerUrl;
   var arrayIndex = counter + 1;
   switch (exchange) {
     case 'bittrex':
-      tickerUrl = 'https://bittrex.com/api/v1.1/public/getticker?market='; break;
-    case 'yoBit':
-      tickerUrl = 'https://yobit.net/api/3/ticker/'; break;
+      tickerUrl = 'https://bittrex.com/api/v1.1/public/getticker?market='+markets[arrayIndex]; break;
     default:
       break;
   }
   var timeNow = new Date();
-    request(tickerUrl+markets[arrayIndex], function (error, response, body) {
-      if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
-        var data= JSON.parse(body), tickerConditionalObj1, tickerConditionalObj2;
+  var options = {
+    method: 'GET',
+    uri: tickerUrl,
+    headers: { 'User-Agent': 'test' },
+    json: true
+  }
+
+  rp(options)
+    .then(body => {
+        var data= body, tickerConditionalObj1, tickerConditionalObj2;
         switch (exchange) {
           case 'bittrex':
           if (data.result) {
@@ -26,9 +31,6 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
             console.log('bittrex getticker failed at '+timeNow);
             return;
           }
-          case 'yoBit':
-            tickerConditionalObj1 = data[Object.keys(data)[0]]!=null; tickerConditionalObj2 = data[Object.keys(data)[0]]!=null;
-            btcPriceObj = data[Object.keys(data)[0]].buy; break;
           default:
             break;
         }
@@ -44,42 +46,36 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
       else {
         console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
       }
+    if ((Object.keys(newTickerObj).length)>=(markets.length)) {
+      //console.log('all markets covered for '+exchange+' for a total of '+markets.length+' markets');
+      newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
+      qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
+      oldTickerObj = newTickerObj;
+      setTimeout(function() {
+        getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
+      //return newTickerObj;
     }
-    else {
-      //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'"))) {
-      var label = markets[arrayIndex];
-      newTickerObj[label] = {};
-      if (error && exchange != 'yoBit') {
-        var errTime = new Date();
-        console.log('ticker for exchange '+exchange+' failed at '+errTime);
-        //console.log(error);
-      }
-  //  }
-  }
-  if ((Object.keys(newTickerObj).length)>=(markets.length)) {
-    //console.log('all markets covered for '+exchange+' for a total of '+markets.length+' markets');
-    newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
-    qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
-    oldTickerObj = newTickerObj;
-    setTimeout(function() {
-      getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-    }, timeGap);
-    //return newTickerObj;
-  }
-}, true);
 
-  if (arrayIndex<markets.length-1) {
-    getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
-  }
+    if (arrayIndex<markets.length-1) {
+      getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
+    }
+  })
+  .catch(e => {
+    var label = markets[arrayIndex];
+    newTickerObj[label] = {};
+      var errTime = new Date();
+      console.log('ticker for exchange '+exchange+' failed at '+errTime);
+      //console.log(error);
+  })
 }
 
+
 function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
-  var markets = [], newTickerObj = {}, marketUrl;
+  var markets = [], newTickerObj = {};
   switch (exchange) {
     case 'bittrex':
       marketUrl = 'https://bittrex.com/api/v1.1/public/getmarkets'; break;
-    case 'yoBit':
-      marketUrl = 'https://yobit.net/api/3/info'; break;
     default:
       break;
   }
@@ -91,8 +87,6 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
       switch (exchange) {
         case 'bittrex':
           marketLoopArr = data.result; btcStr = 'BTC-'; btcUsdStr = 'USDT-BTC'; break;
-        case 'yoBit':
-          marketLoopArr = data.pairs; btcStr = '_btc'; btcUsdStr = 'btc_usd'; break;
         default:
           break;
       }
@@ -100,8 +94,6 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
         switch (exchange) {
           case 'bittrex':
             marketObj = data.result[i].MarketName; break;
-          case 'yoBit':
-            marketObj = i; break;
           default:
             break;
         }

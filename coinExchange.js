@@ -13,7 +13,7 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
   rp(options)
     .then(body => {
          var timeNow = new Date();
-         if (body.result !=null && body.result !=undefined) {
+         if (body.result) {
            var returnObj = body.result;
          }
          for (var arrayIndex in returnObj) {
@@ -54,7 +54,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
     .then(body => {
       var coinExchangeMarketMap = {}, newTickerObj = {};
          var timeNow = new Date();
-         if (body.result !=null && body.result !=undefined) {
+         if (body.result) {
           var returnObj = body.result;
           }
          for (var arrayIndex in returnObj) {

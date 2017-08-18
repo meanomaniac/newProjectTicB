@@ -109,9 +109,6 @@ select count(distinct tradePair) from cTicker;
 select distinct tradePair from orderHistory;
 select count( tradePair) from cTicker;
 
-select * from cTicker;
-select * from orderHistory; 
-select * from openOrders;
 
 select * from cTicker where recordTime > '2017-08-18';
 select * from orderHistory where recordTime > '2017-08-17 14:33:34';
@@ -127,4 +124,10 @@ select count(*) from openOrders;
 select count(*) from orderHistory;
 
 select distinct(exchangeName) from cTicker;
-select * from cTicker where exchangeName = 'bittrex';
+select distinct(exchangeName) from openOrders;
+select distinct(exchangeName) from orderHistory;
+select * from cTicker where exchangeName = 'yoBit';
+
+select * from cTicker;
+select * from orderHistory; 
+select * from openOrders;
