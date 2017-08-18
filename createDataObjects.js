@@ -1,6 +1,6 @@
-var writeToDB = require('./writeToDB.js'), fs = require('fs');
-var openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
-var orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
+var writeToDB = require('./writeToDB.js'), fs = require('fs'),
+openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'],
+orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'];
 
 var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldTrackingStatus) {
   var objProperty = label;
@@ -30,13 +30,13 @@ var returnCompleteTickerObj = function (tickerObj, oldTickerObj, timeVar) {
       tickerObj[arrayIndex].SPUSD = tickerObj.USD_BTC.SPBTC * tickerObj[arrayIndex].SPBTC;
     }
   //console.log('ticker iteration tracking status: '+(tickerObj[Object.keys(tickerObj)[0]]).trackingStatus)
-  oldTickerObj = tickerObj;
+  //oldTickerObj = tickerObj;
   return tickerObj;
 }
 
 function returnopenOrdersObj (exchange, tradePair, maxBuy, minBuy, totalBuys, totalBuyAmount, maxSell, minSell, totalSells, totalSellAmount, recordTime) {
   var dbArray = [];
-  openOrdersObj = {
+  var openOrdersObj = {
     'exchange': exchange,
     'tradePair': tradePair,
     'maxBuy': maxBuy,
@@ -51,6 +51,8 @@ function returnopenOrdersObj (exchange, tradePair, maxBuy, minBuy, totalBuys, to
   };
   dbArray.push(openOrdersObj);
   writeToDB('openOrders', exchange, openOrdersDBColumns, dbArray, -1);
+  //console.log(exchange);
+  //writeToDB('openOrdersTest', exchange, openOrdersDBColumns, dbArray, -1);
 }
 
 function returnHistoryObj (exchange, tradePair, maxBuy, minBuy, totalBuys, totalBuyAmount, maxSell, minSell, totalSells, totalSellAmount, recordTime) {
@@ -70,6 +72,7 @@ function returnHistoryObj (exchange, tradePair, maxBuy, minBuy, totalBuys, total
   };
   dbArray.push(orderHistoryObj);
   writeToDB('orderHistory', exchange, orderHistoryDBColumns, dbArray, -1);
+  //writeToDB('orderHistoryTest', exchange, orderHistoryDBColumns, dbArray, -1);
 }
 
 module.exports = {createTickerObj, returnCompleteTickerObj, returnopenOrdersObj, returnHistoryObj};

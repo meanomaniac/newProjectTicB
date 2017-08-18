@@ -1,5 +1,18 @@
 use pocu3;
 
+select * from cTickerTest;
+select * from orderHistoryTest where exchangeName = 'poloniex'; 
+select * from openOrdersTest;
+
+delete from cTickerTest where true=true;
+delete from openOrdersTest where true=true;
+delete from orderHistoryTest where true=true;
+
+select * from cTickerTest;
+select * from orderHistoryTest; 
+select * from openOrdersTest;
+select distinct(exchangeName) from cTickerTest;
+
 CREATE TABLE cTicker (
 	exchangeName VARCHAR(15) NULL,
 	tradePair VARCHAR(20) NULL,
@@ -87,6 +100,7 @@ drop table orderHistory;
 delete from cTicker where true=true;
 delete from openOrders where true=true;
 delete from orderHistory where true=true;
+
 show tables;
 describe openOrders;
 
@@ -99,9 +113,9 @@ select * from cTicker;
 select * from orderHistory; 
 select * from openOrders;
 
-select * from cTicker where recordTime > '2017-08-16 19:43:34';
-select * from orderHistory where recordTime > '2017-08-16 19:43:34';
-select * from openOrders where recordTime > '2017-08-16 19:43:34';
+select * from cTicker where recordTime > '2017-08-18';
+select * from orderHistory where recordTime > '2017-08-17 14:33:34';
+select * from openOrders where recordTime > '2017-08-17 00:31:34';
 
 select * from cTicker where exchangeName = 'poloniex';
 select * from openOrders where exchangeName = 'livecoin';
@@ -112,11 +126,5 @@ select count(*) from cTicker where exchangeName = 'poloniex';
 select count(*) from openOrders;
 select count(*) from orderHistory;
 
-
-select * from cTickerTest;
-select * from orderHistoryTest; 
-select * from openOrdersTest;
-
-delete from cTickerTest where true=true;
-delete from openOrdersTest where true=true;
-delete from orderHistoryTest where true=true;
+select distinct(exchangeName) from cTicker;
+select * from cTicker where exchangeName = 'bittrex';

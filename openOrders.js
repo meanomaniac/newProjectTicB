@@ -4,6 +4,7 @@ var request =require('request'), fs = require('fs'), createDataObjects = require
 
 function getOpenOrders (exchange, tradePairArr, iterator) {
     iterator++;
+    var openOrdersUrl;
     if (exchange == 'cryptopia') {
       if (tradePairArr[iterator].includes('/')) {
         tradePairSplitArr = tradePairArr[iterator].split('/');
@@ -31,7 +32,7 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
     request(openOrdersUrl, function (error, response, body) {
       if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
         var returnObj2 = (JSON.parse(body));
-        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
+        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar, sellLoopVar, buyObj, sellObj ;
         switch (exchange) {
           case 'cryptopia':
               buyLoopVar = returnObj2.Data.Buy; sellLoopVar = returnObj2.Data.Sell; break;

@@ -1,5 +1,5 @@
-var mysql = require('mysql');
-var con = mysql.createConnection({
+var mysql = require('mysql'),
+con = mysql.createConnection({
   host: "pocu3.ceixhvsknluf.us-east-2.rds.amazonaws.com",
   post: "3306",
   user: "SYSTEM",
@@ -11,12 +11,14 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
     iterator++;
     var queryParameters = [];
     if (table == 'cTicker') {
+    //if (table == 'cTickerTest') {
       var dbtradePair = objArr[iterator].tradePair || "null", dbaskPriceUSD = objArr[iterator].SPUSD || -1,
       dbaskPriceBTC = objArr[iterator].SPBTC || -1, dbrecordTime = objArr[iterator].time || "null",
       dbtrackingStatus = objArr[iterator].trackingStatus || -1, dbpriceChange = objArr[iterator].priceChange;
       queryParameters.push(exchange, dbtradePair,dbaskPriceUSD,dbaskPriceBTC,dbrecordTime,dbtrackingStatus,dbpriceChange);
     }
     else if (table == 'openOrders' || table == 'orderHistory') {
+    //else if (table == 'openOrdersTest' || table == 'orderHistoryTest') {
       var dbtradePair = objArr[iterator].tradePair || "null", dbmaxBuy = objArr[iterator].maxBuy || -1,
       dbminBuy = objArr[iterator].minBuy || -1, dbtotalBuys = objArr[iterator].totalBuys || -1,
       dbtotalBuyAmount = objArr[iterator].totalBuyAmount || -1, dbmaxSell = objArr[iterator].maxSell || -1,
@@ -36,8 +38,8 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
       }
     }
     var query =query1+ query2+");";
-    // console.log(query);
-  con.query(query, queryParameters, function (err, result) {
+    //console.log(query);
+    con.query(query, queryParameters, function (err, result) {
     if (err) {
       var errTime = new Date();
       console.log("query: "+query);

@@ -1,21 +1,16 @@
 /*
 The setIntervalSynchronous function allows the execution of setInterval in a synchronous way (https://gist.github.com/AndersDJohnson/4385908)
 */
-var fs = require('fs');
-var coinExchange = require('./coinExchange.js');
-var stdGetPublicData = require('./stdGetPublicData.js');
-var stdGetPublicData2 = require('./stdGetPublicData2.js');
-var exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'];
-//var exchangeList = ['hitBTC', 'yoBit', 'coinExchange'];
-//var exchangeList = ['yoBit'];
-var tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'];
-var thirtySecThreshold = 0.01;
-var cmcUSDBTC;
+var fs = require('fs'), coinExchange = require('./coinExchange.js'), stdGetPublicData = require('./stdGetPublicData.js'),
+stdGetPublicData2 = require('./stdGetPublicData2.js'),
+exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'],
+tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'],
+thirtySecThreshold = 0.01, cmcUSDBTC;
 
 getAllMarketInfo(30000, thirtySecThreshold);
 
 function getAllMarketInfo (timeGap, changeThreshold) {
-  for (i=0; i<exchangeList.length; i++) {
+  for (var i=0; i<exchangeList.length; i++) {
     switch (exchangeList[i]) {
       case 'cryptopia':
       case 'hitBTC':

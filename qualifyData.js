@@ -1,7 +1,5 @@
-var fs = require('fs');
-var writeToDB = require('./writeToDB.js');
-var openOrders = require('./openOrders.js');
-var orderHistory = require('./orderHistory.js');
+var fs = require('fs'), writeToDB = require('./writeToDB.js'), openOrders = require('./openOrders.js'),
+orderHistory = require('./orderHistory.js'), orderHistory2 = require('./orderHistory2.js');
 
 var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns) {
   var coinExchange = require('./coinExchange.js');
@@ -29,17 +27,22 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
   if (dbArray.length > 0) {
    //console.log('writing ticker to DB:');
    writeToDB('cTicker', exchange, tickerDBColumns, dbArray, -1);
+   //writeToDB('cTickerTest', exchange, tickerDBColumns, dbArray, -1);
   }
 
   if (marketDataArray.length > 0) {
     //console.log('writing specifc records to order tables');
-    if (exchange != 'coinMarketCap' && exchange != 'coinExchange') {
+    if (exchange != 'coinMarketCap' && exchange != 'coinExchange' && exchange != 'yoBit') {
       openOrders.getOpenOrders(exchange, marketDataArray, -1);
       orderHistory.getOrderHistory(exchange, marketDataArray, -1);
     }
     else if (exchange == 'coinExchange') {
       coinExchange.getOpenOrders(marketDataArray, -1);
       coinExchange.getOrderHistory(marketDataArray, -1);
+    }
+    else if (exchange == 'yoBit') {
+      openOrders.getOpenOrders(exchange, marketDataArray, -1);
+      orderHistory2.getOrderHistory(exchange, marketDataArray, -1);
     }
   }
 

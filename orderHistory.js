@@ -1,8 +1,8 @@
 var rp = require('request-promise'), fs = require('fs'), createDataObjects = require('./createDataObjects.js');
-var buyLoopVar, buyCondition, sellCondition, orderType;
 
 function getOrderHistory (exchange, tradePairArr, iterator) {
   iterator++;
+  var openOrdersUrl;
   if (exchange == 'cryptopia') {
     if (tradePairArr[iterator].includes('/')) {
       tradePairSplitArr = tradePairArr[iterator].split('/');
@@ -43,7 +43,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     .then(body => {
       if (body) {
         var returnObj3 = body;
-        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0;
+        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar, buyCondition, sellCondition, buyObj, orderType;
         switch (exchange) {
           case 'cryptopia':
               buyLoopVar = returnObj3.Data; buyCondition = 'Buy';  sellCondition = 'Sell'; break;
@@ -113,7 +113,9 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     var errTime = new Date();
     console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
     console.log(tradePairArr[iterator]);
-    console.log(e);
+    if (exchange != 'yoBit') {
+      console.log(e);
+    }
   })
 }
 

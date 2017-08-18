@@ -3,7 +3,7 @@ qualifyData = require('./qualifyData.js');
 
 function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
   //console.log('ticker iteration begins for '+exchange);
-  var newTickerObj = {};
+  var newTickerObj = {}, tickerUrl;
     switch (exchange) {
       case 'cryptopia':
         tickerUrl = 'https://www.cryptopia.co.nz/api/GetMarkets'; break;
@@ -22,7 +22,7 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
     }
   request(tickerUrl, function (error, response, body) {
     if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
-        var returnObj = JSON.parse(body);
+        var returnObj = JSON.parse(body), tickerLoopArr, btcStr, btcUsdStr;
         switch (exchange) {
           case 'cryptopia':
             tickerLoopArr = returnObj.Data; btcStr = '/BTC'; btcUsdStr = 'BTC/USDT'; break;
@@ -39,7 +39,7 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
           default:
             break;
         }
-        var timeNow = new Date();
+        var timeNow = new Date(), labelObj, btcPriceObj;
         for (var i in tickerLoopArr) {
             switch (exchange) {
               case 'cryptopia':

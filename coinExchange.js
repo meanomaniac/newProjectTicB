@@ -1,9 +1,7 @@
 var fs = require('fs'), createDataObjects = require('./createDataObjects.js'), qualifyData = require('./qualifyData.js');
 var rp = require('request-promise');
-var coinExchangeMarketMap = {};
-var newTickerObj = {};
 
-function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
+function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj) {
   // console.log('ticker iteration begins for coinExchange');
   var options = {
     method: 'GET',
@@ -54,6 +52,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
 
   rp(options)
     .then(body => {
+      var coinExchangeMarketMap = {}, newTickerObj = {};
          var timeNow = new Date();
          if (body.result !=null && body.result !=undefined) {
           var returnObj = body.result;
@@ -66,7 +65,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
         }
        }
      }
-     coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+     coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
     })
     .catch(e => {
       var errTime = new Date();

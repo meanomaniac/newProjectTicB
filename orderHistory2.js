@@ -103,7 +103,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     }
     else {
       var errTime = new Date();
-      console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
+      console.log('get in orderHistoryOld for exchange '+exchange+' failed at '+errTime);
       console.log(tradePairArr[iterator]);
       console.log(error);
     }
