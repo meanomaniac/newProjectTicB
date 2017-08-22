@@ -24,7 +24,6 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
           }
           else {
             console.log('bittrex getticker failed at '+timeNow);
-            return;
           }
           case 'yoBit':
             tickerConditionalObj1 = data[Object.keys(data)[0]]!=null; tickerConditionalObj2 = data[Object.keys(data)[0]]!=null;
@@ -32,17 +31,19 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
           default:
             break;
         }
-      if (tickerConditionalObj1 != null && tickerConditionalObj2 != null) {
-        if ((Object.keys(oldTickerObj)).length == 0) {
-          var oldTrackingStatus = 0;
+        if (data.result) {
+        if (tickerConditionalObj1 != null && tickerConditionalObj2 != null) {
+          if ((Object.keys(oldTickerObj)).length == 0) {
+            var oldTrackingStatus = 0;
+          }
+          else {
+            var oldTrackingStatus = (oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus;
+          }
+          newTickerObj = createDataObjects.createTickerObj(exchange, newTickerObj, markets[arrayIndex], btcPriceObj, timeNow, oldTrackingStatus);
         }
         else {
-          var oldTrackingStatus = (oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus;
+          console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
         }
-        newTickerObj = createDataObjects.createTickerObj(exchange, newTickerObj, markets[arrayIndex], btcPriceObj, timeNow, oldTrackingStatus);
-      }
-      else {
-        console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
       }
     }
     else {
@@ -56,6 +57,7 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
       }
   //  }
   }
+
   if ((Object.keys(newTickerObj).length)>=(markets.length)) {
     //console.log('all markets covered for '+exchange+' for a total of '+markets.length+' markets');
     newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);

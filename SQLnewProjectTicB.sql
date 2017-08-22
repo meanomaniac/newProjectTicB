@@ -13,6 +13,21 @@ select * from orderHistoryTest;
 select * from openOrdersTest;
 select distinct(exchangeName) from cTickerTest;
 
+select max(recordTime) from cTicker where exchangeName = 'poloniex';
+select max(recordTime) from cTicker where exchangeName = 'coinExchange';
+select max(recordTime) from cTicker where exchangeName = 'hitBTC';
+select max(recordTime) from cTicker where exchangeName = 'cryptopia';
+select max(recordTime) from cTicker where exchangeName = 'bittrex';
+
+select max(recordTime) from cTicker where exchangeName = 'livecoin';
+select max(recordTime) from cTicker where exchangeName = 'novaexchange';
+select max(recordTime) from cTicker where exchangeName = 'yoBit';
+select max(recordTime) from cTicker where exchangeName = 'coinMarketCap';
+
+select max(recordTime) from openOrders where exchangeName = 'livecoin';
+select max(recordTime) from orderHistory where exchangeName = 'livecoin';
+
+
 CREATE TABLE cTicker (
 	exchangeName VARCHAR(15) NULL,
 	tradePair VARCHAR(20) NULL,
@@ -104,13 +119,19 @@ delete from orderHistory where true=true;
 show tables;
 describe openOrders;
 
+
+CREATE TABLE cTickerArchived LIKE cTicker;
+select * from cTickerArchived;
+select count(*) from cTickerArchived;
+INSERT INTO cTickerArchived SELECT * FROM cTicker;
+
 select count(distinct tradePair) from orderHistory;
 select count(distinct tradePair) from cTicker;
 select distinct tradePair from orderHistory;
 select count( tradePair) from cTicker;
 
 
-select * from cTicker where recordTime > '2017-08-18';
+select * from cTicker where recordTime > '2017-08-22 02:19:34';
 select * from orderHistory where recordTime > '2017-08-17 14:33:34';
 select * from openOrders where recordTime > '2017-08-17 00:31:34';
 
@@ -131,3 +152,7 @@ select * from cTicker where exchangeName = 'yoBit';
 select * from cTicker;
 select * from orderHistory; 
 select * from openOrders;
+
+select exchangeName, tradePair, max(priceChange) from cTicker where priceChange < 9900;
+select * from cTicker where exchangeName != 'coinMarketCap' order by priceChange DESC ;
+select * from cTicker where tradePair = 'BTC_TYC' ;
