@@ -15,23 +15,23 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
   var timeNow = new Date();
     request(tickerUrl+markets[arrayIndex], function (error, response, body) {
       if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
-        var data= JSON.parse(body), tickerConditionalObj1, tickerConditionalObj2;
+        var data= JSON.parse(body), tickerConditionalObj1, tickerConditionalObj2, btcPriceObj = null;
         switch (exchange) {
           case 'bittrex':
-          if (data.result) {
-            tickerConditionalObj1 = data; tickerConditionalObj2 = data.result;
-            btcPriceObj = data.result.Ask; break;
-          }
-          else {
-            console.log('bittrex getticker failed at '+timeNow);
-          }
+            if (data.result) {
+              tickerConditionalObj1 = data; tickerConditionalObj2 = data.result;
+              btcPriceObj = data.result.Ask; break;
+            }
+            else {
+              console.log('bittrex getticker failed at '+timeNow); break;
+            }
           case 'yoBit':
             tickerConditionalObj1 = data[Object.keys(data)[0]]!=null; tickerConditionalObj2 = data[Object.keys(data)[0]]!=null;
             btcPriceObj = data[Object.keys(data)[0]].buy; break;
           default:
             break;
         }
-        if (data.result) {
+        if (btcPriceObj != null) {
         if (tickerConditionalObj1 != null && tickerConditionalObj2 != null) {
           if ((Object.keys(oldTickerObj)).length == 0) {
             var oldTrackingStatus = 0;
