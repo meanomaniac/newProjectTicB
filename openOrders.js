@@ -105,10 +105,12 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
                                       Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
       }
       else {
-        var errTime = new Date();
-        console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
-        console.log(tradePairArr[iterator]);
-        //console.log(error);
+        if (exchange != 'livecoin') {
+          var errTime = new Date();
+          console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
+          console.log(tradePairArr[iterator]);
+          //console.log(error);
+        }
       }
     });
     if (iterator<tradePairArr.length-1) {

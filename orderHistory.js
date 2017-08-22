@@ -110,11 +110,13 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         }
   })
   .catch(e => {
-    var errTime = new Date();
-    console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
-    console.log(tradePairArr[iterator]);
-    if (exchange != 'yoBit') {
-      //console.log(e);
+    if (exchange != 'livecoin') {
+      var errTime = new Date();
+      console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
+      console.log(tradePairArr[iterator]);
+      if (exchange != 'yoBit') {
+        //console.log(e);
+      }
     }
   })
 }
