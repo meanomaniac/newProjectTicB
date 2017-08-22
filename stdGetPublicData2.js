@@ -23,6 +23,8 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
               btcPriceObj = data.result.Ask; break;
             }
             else {
+              var label = markets[arrayIndex];
+              newTickerObj[label] = {};
               console.log('bittrex getticker failed at '+timeNow); break;
             }
           case 'yoBit':

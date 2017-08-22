@@ -78,15 +78,15 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
       }
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
       oldTickerObj = newTickerObj;
-      setTimeout(function() {
-        ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, timeGap);
     }
     else {
       var errTime = new Date();
       console.log('ticker for exchange '+exchange+' failed at '+errTime);
       console.log(error);
     }
+    setTimeout(function() {
+      ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+    }, timeGap);
   });
 }
 
