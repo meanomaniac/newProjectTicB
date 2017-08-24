@@ -4,6 +4,7 @@ qualifyData = require('./qualifyData.js');
 function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj) {
   var tickerUrl;
   var arrayIndex = counter + 1;
+  var label = markets[arrayIndex];
   switch (exchange) {
     case 'bittrex':
       tickerUrl = 'https://bittrex.com/api/v1.1/public/getticker?market='; break;
@@ -23,18 +24,16 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
               btcPriceObj = data.result.Ask; break;
             }
             else {
-              var label = markets[arrayIndex];
-              newTickerObj[label] = {};
               console.log('bittrex getticker failed at '+timeNow); break;
             }
           case 'yoBit':
-            tickerConditionalObj1 = data[Object.keys(data)[0]]!=null; tickerConditionalObj2 = data[Object.keys(data)[0]]!=null;
+            tickerConditionalObj1 = data[Object.keys(data)[0]]; tickerConditionalObj2 = data[Object.keys(data)[0]];
             btcPriceObj = data[Object.keys(data)[0]].buy; break;
           default:
             break;
         }
-        if (btcPriceObj != null) {
-        if (tickerConditionalObj1 != null && tickerConditionalObj2 != null) {
+        if (btcPriceObj) {
+        if (tickerConditionalObj1 && tickerConditionalObj2) {
           if ((Object.keys(oldTickerObj)).length == 0) {
             var oldTrackingStatus = 0;
           }
@@ -45,18 +44,15 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
         }
         else {
           console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
-          var label = markets[arrayIndex];
           newTickerObj[label] = {};
         }
       }
       else {
-        var label = markets[arrayIndex];
         newTickerObj[label] = {};
       }
     }
     else {
       //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'"))) {
-      var label = markets[arrayIndex];
       newTickerObj[label] = {};
       if (error && exchange != 'yoBit') {
         var errTime = new Date();
