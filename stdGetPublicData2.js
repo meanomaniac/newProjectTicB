@@ -45,7 +45,13 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
         }
         else {
           console.log(markets[arrayIndex] + " at index: " + arrayIndex+" not found");
+          var label = markets[arrayIndex];
+          newTickerObj[label] = {};
         }
+      }
+      else {
+        var label = markets[arrayIndex];
+        newTickerObj[label] = {};
       }
     }
     else {

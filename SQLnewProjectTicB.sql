@@ -24,8 +24,28 @@ select max(recordTime) from cTicker where exchangeName = 'novaexchange';
 select max(recordTime) from cTicker where exchangeName = 'yoBit';
 select max(recordTime) from cTicker where exchangeName = 'coinMarketCap';
 
+select max(recordTime) from openOrders where exchangeName = 'poloniex';
+select max(recordTime) from openOrders where exchangeName = 'coinExchange';
+select max(recordTime) from openOrders where exchangeName = 'hitBTC';
+select max(recordTime) from openOrders where exchangeName = 'cryptopia';
+select max(recordTime) from openOrders where exchangeName = 'bittrex';
+
 select max(recordTime) from openOrders where exchangeName = 'livecoin';
+select max(recordTime) from openOrders where exchangeName = 'novaexchange';
+select max(recordTime) from openOrders where exchangeName = 'yoBit';
+select max(recordTime) from openOrders where exchangeName = 'coinMarketCap';
+
+select max(recordTime) from orderHistory where exchangeName = 'poloniex';
+select max(recordTime) from orderHistory where exchangeName = 'coinExchange';
+select max(recordTime) from orderHistory where exchangeName = 'hitBTC';
+select max(recordTime) from orderHistory where exchangeName = 'cryptopia';
+select max(recordTime) from orderHistory where exchangeName = 'bittrex';
+
 select max(recordTime) from orderHistory where exchangeName = 'livecoin';
+select max(recordTime) from orderHistory where exchangeName = 'novaexchange';
+select max(recordTime) from orderHistory where exchangeName = 'yoBit';
+select max(recordTime) from orderHistory where exchangeName = 'coinMarketCap';
+
 
 
 CREATE TABLE cTicker (
@@ -112,9 +132,9 @@ drop table cTicker;
 drop table openOrders;
 drop table orderHistory;
 
-delete from cTicker where true=true;
-delete from openOrders where true=true;
-delete from orderHistory where true=true;
+delete from cTicker;
+delete from openOrders;
+delete from orderHistory;
 
 show tables;
 describe openOrders;
@@ -125,22 +145,33 @@ select * from cTickerArchived;
 select count(*) from cTickerArchived;
 INSERT INTO cTickerArchived SELECT * FROM cTicker;
 
+CREATE TABLE orderHistoryArchived LIKE orderHistory;
+select * from orderHistoryArchived;
+select count(*) from orderHistoryArchived;
+INSERT INTO orderHistoryArchived SELECT * FROM orderHistory;
+
+CREATE TABLE openOrdersArchived LIKE openOrders;
+select * from openOrdersArchived;
+select count(*) from openOrdersArchived;
+INSERT INTO openOrdersArchived SELECT * FROM openOrders;
+
+
 select count(distinct tradePair) from orderHistory;
 select count(distinct tradePair) from cTicker;
 select distinct tradePair from orderHistory;
 select count( tradePair) from cTicker;
 
 
-select * from cTicker where recordTime > '2017-08-22 02:19:34';
+select * from cTicker where recordTime > '2017-08-22 00:35:00';
 select * from orderHistory where recordTime > '2017-08-17 14:33:34';
 select * from openOrders where recordTime > '2017-08-17 00:31:34';
 
-select * from cTicker where exchangeName = 'poloniex';
+select * from cTicker where exchangeName = 'livecoin';
 select * from openOrders where exchangeName = 'livecoin';
 select * from orderHistory where exchangeName = 'livecoin';
 
 select count(*) from cTicker;   
-select count(*) from cTicker where exchangeName = 'poloniex';
+select count(*) from cTicker where exchangeName = 'livecoin';
 select count(*) from openOrders;
 select count(*) from orderHistory;
 

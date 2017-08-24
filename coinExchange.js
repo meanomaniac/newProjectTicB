@@ -38,6 +38,9 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
     .catch(e => {
       var errTime = new Date();
       console.log('error in coinexchange ticker at '+errTime);
+      setTimeout(function() {
+        coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
       //console.log(e);
     })
 }
