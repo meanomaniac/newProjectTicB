@@ -30,7 +30,14 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
     }
 
     request(openOrdersUrl, function (error, response, body) {
-      if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
+      var responseIsValid = true;
+      try {
+        JSON.parse(body);
+      } catch (e) {
+        responseIsValid = false;
+        //console.log ('invalid openOrders response received from '+exchange);
+      }
+      if (!error && response.statusCode == 200 && responseIsValid) {
         var returnObj2 = (JSON.parse(body));
         var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar, sellLoopVar, buyObj, sellObj ;
         switch (exchange) {

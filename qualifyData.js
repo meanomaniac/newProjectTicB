@@ -18,7 +18,7 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
       priceDiff = 0; priceChange = 0;
       newTickerObj[arrayIndex].priceChange = priceChange*100;
     }
-    //if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold) {
+    //if (oldTickerObj[arrayIndex] == undefined ||  priceDiff > changeThreshold)
     if (priceDiff > changeThreshold) {
       dbArray.push(newTickerObj[arrayIndex]);
       marketDataArray.push(newTickerObj[arrayIndex].tradePair);

@@ -21,7 +21,14 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
         break;
     }
   request(tickerUrl, function (error, response, body) {
-    if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
+    var responseIsValid = true;
+    try {
+      JSON.parse(body);
+    } catch (e) {
+      responseIsValid = false;
+      //console.log ('invalid ticker response received from '+exchange);
+    }
+    if (!error && response.statusCode == 200 && responseIsValid) {
         var returnObj = JSON.parse(body), tickerLoopArr, btcStr, btcUsdStr;
         switch (exchange) {
           case 'cryptopia':
@@ -58,9 +65,9 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
                 break;
             }
 
-            if (tickerLoopArr[i] != null && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
+            if (tickerLoopArr[i] && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
               var marketLabel = labelObj;
-              //if ((Object.keys(oldTickerObj)).length == 0) {
+              //if ((Object.keys(oldTickerObj)).length == 0)
               if (((Object.keys(oldTickerObj)).length == 0) || ((oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus == -1)) {
                 var oldTrackingStatus = 0;
               }

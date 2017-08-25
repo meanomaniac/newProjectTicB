@@ -30,7 +30,14 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
     default: break;
   }
   request(openOrdersUrl, function (error, response, body) {
-    if (!error && response.statusCode == 200 && JSON.parse(body) != null) {
+    var responseIsValid = true;
+    try {
+      JSON.parse(body);
+    } catch (e) {
+      responseIsValid = false;
+      //console.log ('invalid orderHistory response received from '+exchange);
+    }
+    if (!error && response.statusCode == 200 && responseIsValid) {
       try {
         var returnObj3 = (JSON.parse(body));
       }
