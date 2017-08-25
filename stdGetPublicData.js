@@ -60,7 +60,8 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
 
             if (tickerLoopArr[i] != null && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
               var marketLabel = labelObj;
-              if ((Object.keys(oldTickerObj)).length == 0) {
+              //if ((Object.keys(oldTickerObj)).length == 0) {
+              if (((Object.keys(oldTickerObj)).length == 0) || ((oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus == -1)) {
                 var oldTrackingStatus = 0;
               }
               else {
@@ -80,16 +81,23 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
       oldTickerObj = newTickerObj;
     }
     else {
-      if (exchange != 'livecoin') {
+      if (exchange != 'livecoin' && exchange != 'novaexchange') {
         var errTime = new Date();
         console.log('ticker for exchange '+exchange+' failed at '+errTime);
         console.log(error);
       }
     }
+    if (exchange != 'cryptopia') {
+      setTimeout(function() {
+        ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
+    }
+  });
+  if (exchange == 'cryptopia') {
     setTimeout(function() {
       ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-    }, timeGap);
-  });
+    }, (timeGap+15000));
+  }
 }
 
 module.exports = {ticker};

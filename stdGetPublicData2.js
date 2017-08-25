@@ -34,7 +34,8 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
         }
         if (btcPriceObj) {
         if (tickerConditionalObj1 && tickerConditionalObj2) {
-          if ((Object.keys(oldTickerObj)).length == 0) {
+        //  if ((Object.keys(oldTickerObj)).length == 0)
+          if (((Object.keys(oldTickerObj)).length == 0) || ((oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus == -1)){
             var oldTrackingStatus = 0;
           }
           else {
@@ -67,15 +68,24 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
     newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
     qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
     oldTickerObj = newTickerObj;
-    setTimeout(function() {
-      getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-    }, timeGap);
+    if (exchange != 'yoBit') {
+      setTimeout(function() {
+        getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, timeGap);
+    }
     //return newTickerObj;
   }
 }, true);
 
   if (arrayIndex<markets.length-1) {
     getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
+  }
+  else {
+    if (exchange == 'yoBit') {
+      setTimeout(function() {
+        getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      }, (timeGap+15000));
+    }
   }
 }
 

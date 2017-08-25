@@ -13,40 +13,6 @@ select * from orderHistoryTest;
 select * from openOrdersTest;
 select distinct(exchangeName) from cTickerTest;
 
-select max(recordTime) from cTicker where exchangeName = 'poloniex';
-select max(recordTime) from cTicker where exchangeName = 'coinExchange';
-select max(recordTime) from cTicker where exchangeName = 'hitBTC';
-select max(recordTime) from cTicker where exchangeName = 'cryptopia';
-select max(recordTime) from cTicker where exchangeName = 'bittrex';
-
-select max(recordTime) from cTicker where exchangeName = 'livecoin';
-select max(recordTime) from cTicker where exchangeName = 'novaexchange';
-select max(recordTime) from cTicker where exchangeName = 'yoBit';
-select max(recordTime) from cTicker where exchangeName = 'coinMarketCap';
-
-select max(recordTime) from openOrders where exchangeName = 'poloniex';
-select max(recordTime) from openOrders where exchangeName = 'coinExchange';
-select max(recordTime) from openOrders where exchangeName = 'hitBTC';
-select max(recordTime) from openOrders where exchangeName = 'cryptopia';
-select max(recordTime) from openOrders where exchangeName = 'bittrex';
-
-select max(recordTime) from openOrders where exchangeName = 'livecoin';
-select max(recordTime) from openOrders where exchangeName = 'novaexchange';
-select max(recordTime) from openOrders where exchangeName = 'yoBit';
-select max(recordTime) from openOrders where exchangeName = 'coinMarketCap';
-
-select max(recordTime) from orderHistory where exchangeName = 'poloniex';
-select max(recordTime) from orderHistory where exchangeName = 'coinExchange';
-select max(recordTime) from orderHistory where exchangeName = 'hitBTC';
-select max(recordTime) from orderHistory where exchangeName = 'cryptopia';
-select max(recordTime) from orderHistory where exchangeName = 'bittrex';
-
-select max(recordTime) from orderHistory where exchangeName = 'livecoin';
-select max(recordTime) from orderHistory where exchangeName = 'novaexchange';
-select max(recordTime) from orderHistory where exchangeName = 'yoBit';
-select max(recordTime) from orderHistory where exchangeName = 'coinMarketCap';
-
-
 
 CREATE TABLE cTicker (
 	exchangeName VARCHAR(15) NULL,
@@ -178,7 +144,7 @@ select count(*) from orderHistory;
 select distinct(exchangeName) from cTicker;
 select distinct(exchangeName) from openOrders;
 select distinct(exchangeName) from orderHistory;
-select * from cTicker where exchangeName = 'yoBit';
+select * from cTicker where exchangeName = 'cryptopia';
 
 select * from cTicker;
 select * from orderHistory; 
@@ -187,3 +153,35 @@ select * from openOrders;
 select exchangeName, tradePair, max(priceChange) from cTicker where priceChange < 9900;
 select * from cTicker where exchangeName != 'coinMarketCap' order by priceChange DESC ;
 select * from cTicker where tradePair = 'BTC_TYC' ;
+
+use pocu3;
+select max(recordTime) from cTicker where exchangeName = 'poloniex';
+select max(recordTime) from cTicker where exchangeName = 'coinExchange';
+select max(recordTime) from cTicker where exchangeName = 'hitBTC';
+select max(recordTime) from cTicker where exchangeName = 'cryptopia';
+select max(recordTime) from cTicker where exchangeName = 'bittrex';
+
+select max(recordTime) from cTicker where exchangeName = 'livecoin';
+select max(recordTime) from cTicker where exchangeName = 'novaexchange';
+select max(recordTime) from cTicker where exchangeName = 'yoBit';
+select max(recordTime) from cTicker where exchangeName = 'coinMarketCap';
+
+select max(recordTime) from openOrders where exchangeName = 'poloniex';
+select max(recordTime) from openOrders where exchangeName = 'coinExchange';
+select max(recordTime) from openOrders where exchangeName = 'hitBTC';
+select max(recordTime) from openOrders where exchangeName = 'cryptopia';
+select max(recordTime) from openOrders where exchangeName = 'bittrex';
+
+select max(recordTime) from openOrders where exchangeName = 'livecoin';
+select max(recordTime) from openOrders where exchangeName = 'novaexchange';
+select max(recordTime) from openOrders where exchangeName = 'yoBit';
+
+select max(recordTime) from orderHistory where exchangeName = 'poloniex';
+select max(recordTime) from orderHistory where exchangeName = 'coinExchange';
+select max(recordTime) from orderHistory where exchangeName = 'hitBTC';
+select max(recordTime) from orderHistory where exchangeName = 'cryptopia';
+select max(recordTime) from orderHistory where exchangeName = 'bittrex';
+
+select max(recordTime) from orderHistory where exchangeName = 'livecoin';
+select max(recordTime) from orderHistory where exchangeName = 'novaexchange';
+select max(recordTime) from orderHistory where exchangeName = 'yoBit';
