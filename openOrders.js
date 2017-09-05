@@ -37,14 +37,19 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         responseIsValid = false;
         //console.log ('invalid openOrders response received from '+exchange);
       }
-      if (!error && response.statusCode == 200 && responseIsValid) {
+      if (responseIsValid) {
+        if (!error && response.statusCode == 200 && JSON.parse(body)) {
         var returnObj2 = (JSON.parse(body));
-        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar, sellLoopVar, buyObj, sellObj ;
+        var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar = null, sellLoopVar = null, buyObj, sellObj ;
         switch (exchange) {
           case 'cryptopia':
+            if (returnObj2.Data) {
               buyLoopVar = returnObj2.Data.Buy; sellLoopVar = returnObj2.Data.Sell; break;
+            }
           case 'bittrex':
+          if (returnObj2.result) {
               buyLoopVar = returnObj2.result.buy; sellLoopVar = returnObj2.result.sell; break;
+            }
           case 'poloniex':
           case 'livecoin':
           case 'hitBTC':
@@ -52,65 +57,78 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
           case 'novaexchange':
               buyLoopVar = returnObj2.buyorders; sellLoopVar = returnObj2.sellorders; break;
           case 'yoBit':
+            if (returnObj2[tradePairArr[iterator]]) {
               buyLoopVar = (returnObj2[tradePairArr[iterator]]).bids; sellLoopVar = (returnObj2[tradePairArr[iterator]]).asks; break;
+            }
           default: break;
         }
-        //console.log(typeof(buyLoopVar) + tradePairArr[iterator]);
-          for (var i in buyLoopVar) {
+        if (buyLoopVar && sellLoopVar) {
+          //console.log(typeof(buyLoopVar) + tradePairArr[iterator]);
+            for (var i in buyLoopVar) {
+             switch (exchange) {
+               case 'cryptopia':
+                   buyObj = returnObj2.Data.Buy[i].Total; break;
+               case 'bittrex':
+                   buyObj = Number(returnObj2.result.buy[i].Quantity)*Number(returnObj2.result.buy[i].Rate); break;
+               case 'poloniex':
+               case 'livecoin':
+               case 'hitBTC':
+                   buyObj = Number((returnObj2.bids[i])['0'])*Number((returnObj2.bids[i])['1']); break;
+               case 'novaexchange':
+                   buyObj = returnObj2.buyorders[i].baseamount; break;
+               case 'yoBit':
+                   buyObj = Number((returnObj2[tradePairArr[iterator]].bids[i])[0])*Number((returnObj2[tradePairArr[iterator]].bids[i])[1]); break;
+               default: break;
+             }
+             buyArray.push(+buyObj);
+             totalBuyAmount+=buyObj;
+          }
+          for (var i in sellLoopVar) {
            switch (exchange) {
              case 'cryptopia':
-                 buyObj = returnObj2.Data.Buy[i].Total; break;
+                 sellObj = returnObj2.Data.Sell[i].Total; break;
              case 'bittrex':
-                 buyObj = Number(returnObj2.result.buy[i].Quantity)*Number(returnObj2.result.buy[i].Rate); break;
+                 sellObj = Number(returnObj2.result.sell[i].Quantity)*Number(returnObj2.result.sell[i].Rate); break;
              case 'poloniex':
              case 'livecoin':
              case 'hitBTC':
-                 buyObj = Number((returnObj2.bids[i])['0'])*Number((returnObj2.bids[i])['1']); break;
+                 sellObj = Number((returnObj2.asks[i])['0'])*Number((returnObj2.asks[i])['1']); break;
              case 'novaexchange':
-                 buyObj = returnObj2.buyorders[i].baseamount; break;
+                 sellObj = returnObj2.sellorders[i].baseamount; break;
              case 'yoBit':
-                 buyObj = Number((returnObj2[tradePairArr[iterator]].bids[i])[0])*Number((returnObj2[tradePairArr[iterator]].bids[i])[1]); break;
+                 sellObj = Number((returnObj2[tradePairArr[iterator]].asks[i])[0])*Number((returnObj2[tradePairArr[iterator]].asks[i])[1]); break;
              default: break;
            }
-           buyArray.push(+buyObj);
-           totalBuyAmount+=buyObj;
+           sellArray.push(+sellObj);
+           totalSellAmount+=sellObj;
         }
-        for (var i in sellLoopVar) {
-         switch (exchange) {
-           case 'cryptopia':
-               sellObj = returnObj2.Data.Sell[i].Total; break;
-           case 'bittrex':
-               sellObj = Number(returnObj2.result.sell[i].Quantity)*Number(returnObj2.result.sell[i].Rate); break;
-           case 'poloniex':
-           case 'livecoin':
-           case 'hitBTC':
-               sellObj = Number((returnObj2.asks[i])['0'])*Number((returnObj2.asks[i])['1']); break;
-           case 'novaexchange':
-               sellObj = returnObj2.sellorders[i].baseamount; break;
-           case 'yoBit':
-               sellObj = Number((returnObj2[tradePairArr[iterator]].asks[i])[0])*Number((returnObj2[tradePairArr[iterator]].asks[i])[1]); break;
-           default: break;
-         }
-         sellArray.push(+sellObj);
-         totalSellAmount+=sellObj;
+        if (buyArray.length == 0) {
+          buyArray.push(0);
+        }
+        if (sellArray.length == 0) {
+          sellArray.push(0);
+        }
+        if (!buyLoopVar) {
+          buyLoopVar = [];
+        }
+        if (!sellLoopVar) {
+          sellLoopVar = [];
+        }
+        var timeNow = new Date();
+        createDataObjects.returnopenOrdersObj(exchange, tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
+                                        buyLoopVar.length, totalBuyAmount, Math.max.apply(Math, sellArray),
+                                        Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
+        }
       }
-      if (buyArray.length == 0) {
-        buyArray.push(0);
+      else {
+        if (exchange != 'livecoin') {
+          var errTime = new Date();
+          console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
+          console.log(tradePairArr[iterator]);
+          //console.log(error);
+        }
       }
-      if (sellArray.length == 0) {
-        sellArray.push(0);
-      }
-      if (!buyLoopVar) {
-        buyLoopVar = [];
-      }
-      if (!sellLoopVar) {
-        sellLoopVar = [];
-      }
-      var timeNow = new Date();
-      createDataObjects.returnopenOrdersObj(exchange, tradePairArr[iterator], Math.max.apply(Math, buyArray), Math.min.apply(Math, buyArray),
-                                      buyLoopVar.length, totalBuyAmount, Math.max.apply(Math, sellArray),
-                                      Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
-      }
+    }
       else {
         if (exchange != 'livecoin') {
           var errTime = new Date();

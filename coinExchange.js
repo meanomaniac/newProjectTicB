@@ -31,18 +31,23 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
        qualifyData('coinExchange', oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
        //return newTickerObj;
        oldTickerObj = newTickerObj;
-       setTimeout(function() {
-         coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-       }, timeGap);
+      //  setTimeout(function() {
+      //    coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      //  }, timeGap);
     })
     .catch(e => {
       var errTime = new Date();
       console.log('error in coinexchange ticker at '+errTime);
       setTimeout(function() {
         coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, timeGap);
+      }, (timeGap+15000));
       //console.log(e);
     })
+
+    // moved the recursive call for coinExchange (to continue the ticker) outside as for some reason its not getting called on some occasions (with no error). So maybe the response is stuck and so the call never gets executed
+    setTimeout(function() {
+      coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+    }, timeGap);
 }
 
 function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
