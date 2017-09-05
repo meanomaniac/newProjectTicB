@@ -144,7 +144,7 @@ select count(*) from orderHistory;
 select distinct(exchangeName) from cTicker;
 select distinct(exchangeName) from openOrders;
 select distinct(exchangeName) from orderHistory;
-select * from cTicker where exchangeName = 'cryptopia';
+select * from cTicker where exchangeName = 'bittrex';
 
 select * from cTicker;
 select * from orderHistory; 

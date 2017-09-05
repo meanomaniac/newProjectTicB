@@ -125,39 +125,49 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
   }
   var newMarkets = [];
   request(marketUrl, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      var count = 0, marketLoopArr, btcStr, btcUsdStr, marketObj;
-      var data= JSON.parse(body);
-      switch (exchange) {
-        case 'bittrex':
-          marketLoopArr = data.result; btcStr = 'BTC-'; btcUsdStr = 'USDT-BTC'; break;
-        case 'yoBit':
-          marketLoopArr = data.pairs; btcStr = '_btc'; btcUsdStr = 'btc_usd'; break;
-        default:
-          break;
-      }
-      for (var i in marketLoopArr) {
+    var responseIsValid = true;
+    try {
+      JSON.parse(body);
+    } catch (e) {
+      responseIsValid = false;
+      //console.log ('invalid ticker response received from '+exchange);
+    }
+
+    if (responseIsValid) {
+      if (!error && response.statusCode == 200) {
+        var count = 0, marketLoopArr, btcStr, btcUsdStr, marketObj;
+        var data= JSON.parse(body);
         switch (exchange) {
           case 'bittrex':
-            marketObj = data.result[i].MarketName; break;
+            marketLoopArr = data.result; btcStr = 'BTC-'; btcUsdStr = 'USDT-BTC'; break;
           case 'yoBit':
-            marketObj = i; break;
+            marketLoopArr = data.pairs; btcStr = '_btc'; btcUsdStr = 'btc_usd'; break;
           default:
             break;
         }
-        if (marketObj.indexOf(btcStr) !== -1 || marketObj == btcUsdStr ) {
-          newMarkets.push(marketObj);
-          count++;
+        for (var i in marketLoopArr) {
+          switch (exchange) {
+            case 'bittrex':
+              marketObj = data.result[i].MarketName; break;
+            case 'yoBit':
+              marketObj = i; break;
+            default:
+              break;
+          }
+          if (marketObj.indexOf(btcStr) !== -1 || marketObj == btcUsdStr ) {
+            newMarkets.push(marketObj);
+            count++;
+          }
         }
       }
+      else {
+          var errTime = new Date();
+          console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
+          //console.log(error);
+      }
+      markets = newMarkets;
+      getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
     }
-    else {
-        var errTime = new Date();
-        console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
-        //console.log(error);
-    }
-    markets = newMarkets;
-    getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
   }, true);
 }
 
