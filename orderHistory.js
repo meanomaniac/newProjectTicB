@@ -112,7 +112,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         }
   })
   .catch(e => {
-    if (exchange != 'livecoin') {
+    if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit') {
       var errTime = new Date();
       console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
       console.log(tradePairArr[iterator]);

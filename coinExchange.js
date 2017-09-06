@@ -57,10 +57,9 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
     headers: { 'User-Agent': 'test' },
     json: true
   }
-
+  var coinExchangeMarketMap = {}, newTickerObj = {};
   rp(options)
     .then(body => {
-      var coinExchangeMarketMap = {}, newTickerObj = {};
          var timeNow = new Date();
          if (body.result) {
           var returnObj = body.result;
@@ -73,13 +72,13 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
         }
        }
      }
-     coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
     })
     .catch(e => {
       var errTime = new Date();
       console.log('error in coinexchange markets at '+errTime);
       //console.log(e);
     })
+    coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
 }
 
 function getOpenOrders (tradePairArr, iterator) {

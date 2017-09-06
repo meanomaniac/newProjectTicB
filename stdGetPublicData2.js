@@ -39,7 +39,7 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
             btcPriceObj = data.result.Ask; break;
           }
           else {
-            console.log('bittrex getticker failed at '+timeNow); break;
+            //console.log('bittrex getticker failed at '+timeNow); break;
           }
         case 'yoBit':
           if (data[Object.keys(data)[0]]) {
@@ -62,7 +62,7 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
         oldTickerObj[label] = newTickerObj[label];
       }
       else if (btcPriceObj != 0) {
-        console.log(markets[arrayIndex] + " at index: " + arrayIndex+" for "+exchange+" not found");
+        //console.log(markets[arrayIndex] + " at index: " + arrayIndex+" for "+exchange+" not found");
         newTickerObj[label] = {};
       }
   }
@@ -71,7 +71,7 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
     newTickerObj[label] = {};
     if (error && exchange != 'yoBit') {
       var errTime = new Date();
-      console.log('ticker for exchange '+exchange+' failed at '+errTime);
+      //console.log('ticker for exchange '+exchange+' failed at '+errTime);
       //console.log(error);
     }
   //
