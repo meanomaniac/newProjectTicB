@@ -37,8 +37,7 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         responseIsValid = false;
         //console.log ('invalid openOrders response received from '+exchange);
       }
-      if (responseIsValid) {
-        if (!error && response.statusCode == 200 && JSON.parse(body)) {
+        if (responseIsValid && !error && response.statusCode == 200 && JSON.parse(body)) {
         var returnObj2 = (JSON.parse(body));
         var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar = null, sellLoopVar = null, buyObj, sellObj ;
         switch (exchange) {
@@ -120,15 +119,6 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
                                         Math.min.apply(Math, sellArray), sellLoopVar.length, totalSellAmount, timeNow);
         }
       }
-      else {
-        if (exchange != 'livecoin') {
-          var errTime = new Date();
-          console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
-          console.log(tradePairArr[iterator]);
-          //console.log(error);
-        }
-      }
-    }
       else {
         if (exchange != 'livecoin') {
           var errTime = new Date();

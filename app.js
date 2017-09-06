@@ -5,7 +5,7 @@ var fs = require('fs'), coinExchange = require('./coinExchange.js'), stdGetPubli
 stdGetPublicData2 = require('./stdGetPublicData2.js'),
 //getBittrexPublicData = require('./getBittrexPublicData.js'),
 exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'],
-//exchangeList = ['bittrex'],
+//exchangeList = ['novaexchange'],
 tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'],
 thirtySecThreshold = 0.01, cmcUSDBTC;
 

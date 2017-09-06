@@ -36,8 +36,7 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
       responseIsValid = false;
       //console.log ('invalid orderHistory response received from '+exchange);
     }
-    if (responseIsValid) {
-      if (!error && response.statusCode == 200 && JSON.parse(body)) {
+      if (responseIsValid && !error && response.statusCode == 200 && JSON.parse(body)) {
           var returnObj3 = (JSON.parse(body));
           var buyArray = [], sellArray = [], totalBuyAmount = 0, totalSellAmount = 0, buyLoopVar = null, buyCondition, sellCondition, orderType;
           switch (exchange) {
@@ -115,13 +114,6 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         console.log(tradePairArr[iterator]);
         //console.log(error);
       }
-    }
-    else {
-      var errTime = new Date();
-      console.log('get in orderHistoryOld for exchange '+exchange+' failed at '+errTime);
-      console.log(tradePairArr[iterator]);
-      //console.log(error);
-    }
     });
     if (iterator<tradePairArr.length-1) {
         setTimeout(function () {getOrderHistory (exchange, tradePairArr, iterator);}, 200);

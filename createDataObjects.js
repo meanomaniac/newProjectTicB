@@ -3,7 +3,7 @@ openOrdersDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBu
 orderHistoryDBColumns = ['exchangeName', 'tradePair', 'maxBuy', 'minBuy', 'totalBuys', 'totalBuyAmount', 'maxSell', 'minSell', 'totalSells', 'totalSellAmount', 'recordTime'],
 cmcUSDBTC;
 
-var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldTrackingStatus) {
+var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldTrackingStatus, usdBtc) {
   var objProperty = label;
   if ((label.toUpperCase().indexOf('BTC') !== -1) && ((label.toUpperCase().indexOf('USD') !== -1) || (label.toUpperCase().indexOf('USA') !== -1))) {
       objProperty = 'USD_BTC';
@@ -16,11 +16,14 @@ var createTickerObj = function (exchange, tickerObj, label, spVar, timeVar, oldT
                               time: timeVar,
                               trackingStatus: (oldTrackingStatus + 1)
                              }
+  if (usdBtc && usdBtc.SPBTC) {
+    tickerObj[objProperty].SPUSD = usdBtc.SPBTC * tickerObj[objProperty].SPBTC;
+  }
   return tickerObj;
 }
 
 var returnCompleteTickerObj = function (tickerObj, oldTickerObj, timeVar) {
-  if (tickerObj.USD_BTC == undefined) {
+  if (!tickerObj.USD_BTC) {
     tickerObj.USD_BTC = {tradePair: 'USD_BTC',
                                 SPBTC: cmcUSDBTC,
                                 time: timeVar,

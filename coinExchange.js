@@ -17,7 +17,7 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
            var returnObj = body.result;
          }
          for (var arrayIndex in returnObj) {
-         if (returnObj[arrayIndex] != null) {
+         if (returnObj[arrayIndex]) {
            if ((Object.keys(oldTickerObj)).length == 0) {
              var oldTrackingStatus = 0;
            }
@@ -40,7 +40,7 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
       console.log('error in coinexchange ticker at '+errTime);
       setTimeout(function() {
         coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, (timeGap+15000));
+      }, (timeGap));
       //console.log(e);
     })
 
