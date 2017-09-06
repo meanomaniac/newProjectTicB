@@ -7,7 +7,7 @@ var qualifyData = function (exchange, oldTickerObj, newTickerObj, changeThreshol
   var marketDataArray = [];
   for (var arrayIndex in newTickerObj) {
     var priceDiff, priceChange;
-    if (oldTickerObj[arrayIndex] != undefined) {
+    if (oldTickerObj[arrayIndex]) {
       priceChange = (newTickerObj[arrayIndex].SPBTC-oldTickerObj[arrayIndex].SPBTC)/oldTickerObj[arrayIndex].SPBTC;
       priceDiff = Math.abs(priceChange);
       newTickerObj[arrayIndex].priceChange = priceChange*100;
