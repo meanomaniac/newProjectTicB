@@ -36,11 +36,11 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
       //  }, timeGap);
     })
     .catch(e => {
-      var errTime = new Date();
-      console.log('error in coinexchange ticker at '+errTime);
-      setTimeout(function() {
-        coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, (timeGap));
+      //var errTime = new Date();
+      //console.log('error in coinexchange ticker at '+errTime);
+      // setTimeout(function() {
+      //   coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
+      // }, (timeGap+30000));
       //console.log(e);
     })
 
@@ -75,7 +75,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
     })
     .catch(e => {
       var errTime = new Date();
-      console.log('error in coinexchange markets at '+errTime);
+      //console.log('error in coinexchange markets at '+errTime);
       //console.log(e);
     })
     coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
@@ -123,7 +123,7 @@ function getOpenOrders (tradePairArr, iterator) {
   })
   .catch(e => {
     var errTime = new Date();
-    console.log('error in coinexchange open orders at '+errTime);
+    //console.log('error in coinexchange open orders at '+errTime);
     //console.log(e);
   })
 }
@@ -153,7 +153,7 @@ function getOrderHistory (tradePairArr, iterator) {
   })
   .catch(e => {
     var errTime = new Date();
-    console.log('error in coinexchange order history at '+errTime);
+    //console.log('error in coinexchange order history at '+errTime);
     //console.log(e);
   })
 }
