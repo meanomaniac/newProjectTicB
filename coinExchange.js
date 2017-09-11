@@ -65,7 +65,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
           var returnObj = body.result;
           }
          for (var arrayIndex in returnObj) {
-          if (returnObj[arrayIndex] != null ) {
+          if (!returnObj[arrayIndex]) {
 
              if (returnObj[arrayIndex].BaseCurrencyCode == 'BTC') {
          coinExchangeMarketMap[returnObj[arrayIndex].MarketID] = returnObj[arrayIndex].MarketAssetCode+"-"+returnObj[arrayIndex].BaseCurrencyCode;
@@ -74,7 +74,7 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
      }
     })
     .catch(e => {
-      var errTime = new Date();
+      //var errTime = new Date();
       //console.log('error in coinexchange markets at '+errTime);
       //console.log(e);
     })
@@ -122,7 +122,7 @@ function getOpenOrders (tradePairArr, iterator) {
       }
   })
   .catch(e => {
-    var errTime = new Date();
+    //var errTime = new Date();
     //console.log('error in coinexchange open orders at '+errTime);
     //console.log(e);
   })
@@ -152,7 +152,7 @@ function getOrderHistory (tradePairArr, iterator) {
           }
   })
   .catch(e => {
-    var errTime = new Date();
+    //var errTime = new Date();
     //console.log('error in coinexchange order history at '+errTime);
     //console.log(e);
   })

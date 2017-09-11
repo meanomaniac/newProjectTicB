@@ -69,11 +69,11 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
   else {
     //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'")))
     newTickerObj[label] = {};
-    if (error && exchange != 'yoBit') {
-      var errTime = new Date();
-      //console.log('ticker for exchange '+exchange+' failed at '+errTime);
-      //console.log(error);
-    }
+    // if (error && exchange != 'yoBit') {
+    //   var errTime = new Date();
+    //   //console.log('ticker for exchange '+exchange+' failed at '+errTime);
+    //   //console.log(error);
+    // }
   //
   }
   // moved the recursive call for yoBit and Bittrex (to continue the ticker) outside as for some reason its not getting called on
@@ -149,8 +149,8 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
       markets = newMarkets;
     }
     else {
-        var errTime = new Date();
-        console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
+        // var errTime = new Date();
+        // console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
         //console.log(error);
     }
     getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);

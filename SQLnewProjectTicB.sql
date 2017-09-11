@@ -154,7 +154,6 @@ select exchangeName, tradePair, max(priceChange) from cTicker where priceChange 
 select * from cTicker where exchangeName != 'coinMarketCap' order by priceChange DESC ;
 select * from cTicker where tradePair = 'BTC_TYC' ;
 
-
 select max(recordTime) from cTicker where exchangeName = 'poloniex';
 select max(recordTime) from cTicker where exchangeName = 'coinExchange';
 select max(recordTime) from cTicker where exchangeName = 'hitBTC';
