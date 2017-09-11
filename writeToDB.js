@@ -41,7 +41,7 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
     //console.log(query);
     con.query(query, queryParameters, function (err, result) {
     if (err) {
-      var errTime = new Date();
+      //var errTime = new Date();
       //console.log("query: "+query);
       //console.log("dbError at "+errTime+": "+err);
     };
