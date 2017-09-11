@@ -120,12 +120,12 @@ function getOpenOrders (exchange, tradePairArr, iterator) {
         }
       }
       else {
-        if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit' && exchange != 'cryptopia' && exchange != 'poloniex') {
-          var errTime = new Date();
-          console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
-          console.log(tradePairArr[iterator]);
-          //console.log(error);
-        }
+        // if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit' && exchange != 'cryptopia' && exchange != 'poloniex') {
+        //   var errTime = new Date();
+        //   console.log('get in openOrders for exchange '+exchange+' failed at '+errTime);
+        //   console.log(tradePairArr[iterator]);
+        //   //console.log(error);
+        // }
       }
     });
     if (iterator<tradePairArr.length-1) {

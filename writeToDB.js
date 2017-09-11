@@ -43,7 +43,7 @@ function writeToDB(table, exchange, columnsArr, objArr, iterator) {
     if (err) {
       var errTime = new Date();
       //console.log("query: "+query);
-      console.log("dbError at "+errTime+": "+err);
+      //console.log("dbError at "+errTime+": "+err);
     };
     if (iterator < objArr.length -1) {
       writeToDB(table, exchange, columnsArr, objArr, iterator);

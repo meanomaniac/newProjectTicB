@@ -1,5 +1,6 @@
 var request =require('request'), fs = require('fs'), createDataObjects = require('./createDataObjects.js'),
-qualifyData = require('./qualifyData.js'), markets = [];
+qualifyData = require('./qualifyData.js');
+// markets = [];
 
 function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj) {
   var tickerUrl;
@@ -69,11 +70,11 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
   else {
     //if (error && !((JSON.stringify(error)).includes("code: 'ECONNRESET'")))
     newTickerObj[label] = {};
-    if (error && exchange != 'yoBit') {
-      var errTime = new Date();
-      //console.log('ticker for exchange '+exchange+' failed at '+errTime);
-      //console.log(error);
-    }
+    // if (error && exchange != 'yoBit') {
+    //   //var errTime = new Date();
+    //   //console.log('ticker for exchange '+exchange+' failed at '+errTime);
+    //   //console.log(error);
+    // }
   //
   }
   // moved the recursive call for yoBit and Bittrex (to continue the ticker) outside as for some reason its not getting called on
@@ -81,7 +82,7 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
 }, true);
 
   if (arrayIndex<markets.length-1) {
-    getMarketPrices (arrayIndex, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
+    getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, newMarkets, newTickerObj);
   }
   else {
     // switch (exchange) {
@@ -92,17 +93,19 @@ function getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tick
     //   default: break;
     //
     // }
-      setTimeout(function() {
-        // newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
-        // qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
-        // oldTickerObj = newTickerObj;
-        getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, timeGap);
+    tickerUrl = null;  arrayIndex = null;  label = null;  timeNow = null;
+    responseIsValid = null;  data = null;  tickerConditionalObj1 = null;  tickerConditionalObj2 = null;
+    btcPriceObj = null;  oldTrackingStatus = null;
+    setTimeout(function() {
+      // newTickerObj = createDataObjects.returnCompleteTickerObj(newTickerObj, oldTickerObj, timeNow);
+      // qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
+      // oldTickerObj = newTickerObj;
+      getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, newMarkets, newTickerObj, counter);
+    }, timeGap);
   }
 }
 
-function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
-  var newTickerObj = {}, marketUrl;
+function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, newMarkets, newTickerObj, counter) {
   switch (exchange) {
     case 'bittrex':
       marketUrl = 'https://bittrex.com/api/v1.1/public/getmarkets'; break;
@@ -111,7 +114,7 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
     default:
       break;
   }
-  var newMarkets = [];
+  newMarkets = []; counter = -1; newTickerObj = {};
   request(marketUrl, function (error, response, body) {
     var responseIsValid = true;
     try {
@@ -149,11 +152,14 @@ function getAllMarkets (exchange, oldTickerObj, changeThreshold, tickerDBColumns
       markets = newMarkets;
     }
     else {
-        var errTime = new Date();
-        console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
-        //console.log(error);
+        // var errTime = new Date();
+        // console.log('getMarketList for exchange '+exchange+' failed at '+errTime);
+        // errTime = null;
+        // //console.log(error);
     }
-    getMarketPrices (-1, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, markets, newTickerObj);
+    marketUrl = null;  responseIsValid = null;  marketLoopArr = null;  btcStr = null;  btcUsdStr = null;
+    marketObj = null;  count = null;  data = null;
+    getMarketPrices (counter, exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap, newMarkets, newTickerObj);
   }, true);
 }
 

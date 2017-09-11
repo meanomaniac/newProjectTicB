@@ -23,9 +23,9 @@ function getAllMarketInfo (timeGap, changeThreshold) {
         stdGetPublicData.ticker(exchangeList[i], {}, changeThreshold, tickerDBColumns, timeGap);  break;
       case 'yoBit':
       case 'bittrex':
-        stdGetPublicData2.getAllMarkets(exchangeList[i], {}, changeThreshold, tickerDBColumns, timeGap); break
+        stdGetPublicData2.getAllMarkets(exchangeList[i], {}, changeThreshold, tickerDBColumns, timeGap, [], {}, -1); break
       case 'coinExchange':
-        coinExchange.coinExchangeMarkets({}, changeThreshold, tickerDBColumns, timeGap); break;
+        coinExchange.coinExchangeMarkets({}, changeThreshold, tickerDBColumns, timeGap, {}, {}); break;
       default:
         break;
     }

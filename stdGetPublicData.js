@@ -88,12 +88,17 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
       oldTickerObj = newTickerObj;
     }
     else {
-      if (exchange != 'livecoin' && exchange != 'novaexchange' && exchange != 'hitBTC') {
-        var errTime = new Date();
-        console.log('ticker for exchange '+exchange+' failed at '+errTime);
-        console.log(error);
-      }
+      // if (exchange != 'livecoin' && exchange != 'novaexchange' && exchange != 'hitBTC') {
+      //   var errTime = new Date();
+      //   console.log('ticker for exchange '+exchange+' failed at '+errTime);
+      //   console.log(error);
+      //   errTime = null;
+      // }
     }
+
+    newTickerObj = null;  tickerUrl = null;  responseIsValid = null;  returnObj = null;
+    tickerLoopArr = null;  btcStr = null;  btcUsdStr = null;  timeNow = null;
+    labelObj = null;  btcPriceObj = null;  marketLabel = null;  oldTrackingStatus = null;
 
     if (exchange != 'cryptopia') {
       setTimeout(function() {
