@@ -45,13 +45,12 @@ function coinExchangeTicker(oldTickerObj, changeThreshold, tickerDBColumns, time
     })
 
     // moved the recursive call for coinExchange (to continue the ticker) outside as for some reason its not getting called on some occasions (with no error). So maybe the response is stuck and so the call never gets executed
-    options = null;
     setTimeout(function() {
-      coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
+      coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
     }, timeGap);
 }
 
-function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj) {
+function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, timeGap) {
   var options = {
     method: 'GET',
     uri: 'https://www.coinexchange.io/api/v1/getmarkets',
@@ -75,12 +74,10 @@ function coinExchangeMarkets (oldTickerObj, changeThreshold, tickerDBColumns, ti
      }
     })
     .catch(e => {
-      // var errTime = new Date();
-      // //console.log('error in coinexchange markets at '+errTime);
-      // //console.log(e);
-      // errTime = null;
+      var errTime = new Date();
+      //console.log('error in coinexchange markets at '+errTime);
+      //console.log(e);
     })
-    options = null;
     coinExchangeTicker (oldTickerObj, changeThreshold, tickerDBColumns, timeGap, coinExchangeMarketMap, newTickerObj);
 }
 
@@ -125,9 +122,9 @@ function getOpenOrders (tradePairArr, iterator) {
       }
   })
   .catch(e => {
-    // var errTime = new Date();
-    // //console.log('error in coinexchange open orders at '+errTime);
-    // //console.log(e);
+    var errTime = new Date();
+    //console.log('error in coinexchange open orders at '+errTime);
+    //console.log(e);
   })
 }
 
@@ -155,9 +152,9 @@ function getOrderHistory (tradePairArr, iterator) {
           }
   })
   .catch(e => {
-    // var errTime = new Date();
-    // //console.log('error in coinexchange order history at '+errTime);
-    // //console.log(e);
+    var errTime = new Date();
+    //console.log('error in coinexchange order history at '+errTime);
+    //console.log(e);
   })
 }
 

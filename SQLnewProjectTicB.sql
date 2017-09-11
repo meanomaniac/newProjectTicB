@@ -154,10 +154,6 @@ select exchangeName, tradePair, max(priceChange) from cTicker where priceChange 
 select * from cTicker where exchangeName != 'coinMarketCap' order by priceChange DESC ;
 select * from cTicker where tradePair = 'BTC_TYC' ;
 
-use pocu3;
-select exchangeName, max(recordTime) from cTicker GROUP BY exchangeName;
-select max(recordTime) from openOrders GROUP BY exchangeName;
-select max(recordTime) from orderHistory GROUP BY exchangeName;
 
 select max(recordTime) from cTicker where exchangeName = 'poloniex';
 select max(recordTime) from cTicker where exchangeName = 'coinExchange';
@@ -189,3 +185,8 @@ select max(recordTime) from orderHistory where exchangeName = 'bittrex';
 select max(recordTime) from orderHistory where exchangeName = 'livecoin';
 select max(recordTime) from orderHistory where exchangeName = 'novaexchange';
 select max(recordTime) from orderHistory where exchangeName = 'yoBit';
+
+use pocu3;
+select exchangeName, max(recordTime) from cTicker GROUP BY exchangeName;
+select exchangeName, max(recordTime) from openOrders GROUP BY exchangeName;
+select exchangeName, max(recordTime) from orderHistory GROUP BY exchangeName;

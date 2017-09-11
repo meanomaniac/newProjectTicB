@@ -112,14 +112,14 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
         }
   })
   .catch(e => {
-    // if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit' && exchange != 'cryptopia' && exchange != 'poloniex') {
-    //   var errTime = new Date();
-    //   console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
-    //   console.log(tradePairArr[iterator]);
-    //   if (exchange != 'yoBit') {
-    //     //console.log(e);
-    //   }
-    // }
+    if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit' && exchange != 'cryptopia' && exchange != 'poloniex') {
+      var errTime = new Date();
+      console.log('get in orderHistory for exchange '+exchange+' failed at '+errTime);
+      console.log(tradePairArr[iterator]);
+      if (exchange != 'yoBit') {
+        //console.log(e);
+      }
+    }
   })
 }
 
