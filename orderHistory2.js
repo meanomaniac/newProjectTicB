@@ -101,22 +101,6 @@ function getOrderHistory (exchange, tradePairArr, iterator) {
                                         buyArray.length, totalBuyAmount, Math.max.apply(Math, sellArray),
                                         Math.min.apply(Math, sellArray), sellArray.length, totalSellAmount, timeNow);
         }
-        else {
-          // if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit') {
-          //   var errTime = new Date();
-          //   console.log('get in orderHistoryOld for exchange '+exchange+' failed at '+errTime);
-          //   console.log(tradePairArr[iterator]);
-          //   //console.log(error);
-          // }
-        }
-      }
-      else {
-        // if (exchange != 'livecoin' && exchange != 'bittrex' && exchange != 'hitBTC' && exchange != 'yoBit') {
-        //   var errTime = new Date();
-        //   console.log('get in orderHistoryOld for exchange '+exchange+' failed at '+errTime);
-        //   console.log(tradePairArr[iterator]);
-        // //console.log(error);
-        // }
       }
     });
     if (iterator<tradePairArr.length-1) {

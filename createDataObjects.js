@@ -33,8 +33,6 @@ var returnCompleteTickerObj = function (tickerObj, oldTickerObj, timeVar) {
     for (var arrayIndex in tickerObj) {
       tickerObj[arrayIndex].SPUSD = tickerObj.USD_BTC.SPBTC * tickerObj[arrayIndex].SPBTC;
     }
-  //console.log('ticker iteration tracking status: '+(tickerObj[Object.keys(tickerObj)[0]]).trackingStatus)
-  //oldTickerObj = tickerObj;
   return tickerObj;
 }
 
@@ -55,7 +53,6 @@ function returnopenOrdersObj (exchange, tradePair, maxBuy, minBuy, totalBuys, to
   };
   dbArray.push(openOrdersObj);
   writeToDB('openOrders', exchange, openOrdersDBColumns, dbArray, -1);
-  //console.log(exchange);
   //writeToDB('openOrdersTest', exchange, openOrdersDBColumns, dbArray, -1);
 }
 

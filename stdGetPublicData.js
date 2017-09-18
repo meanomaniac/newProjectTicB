@@ -21,12 +21,12 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
         break;
     }
   request(tickerUrl, function (error, response, body) {
+    // The following try/catch is needed as for some exchanges an incomplete object is being received (that was syntactically wrong)
     var responseIsValid = true;
     try {
       JSON.parse(body);
     } catch (e) {
       responseIsValid = false;
-      //console.log ('invalid ticker response received from '+exchange);
     }
     if (responseIsValid && !error && response.statusCode == 200 && JSON.parse(body)) {
         var returnObj = JSON.parse(body), tickerLoopArr, btcStr, btcUsdStr;
@@ -67,7 +67,6 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
 
             if (tickerLoopArr[i] && (labelObj.indexOf(btcStr) !== -1 || labelObj.indexOf(btcUsdStr) !== -1 )) {
               var marketLabel = labelObj;
-              //if ((Object.keys(oldTickerObj)).length == 0)
               if (((Object.keys(oldTickerObj)).length == 0) || ((oldTickerObj[(Object.keys(oldTickerObj))[0]]).trackingStatus == -1)) {
                 var oldTrackingStatus = 0;
               }
@@ -87,27 +86,11 @@ function ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeG
       qualifyData(exchange, oldTickerObj, newTickerObj, changeThreshold, tickerDBColumns);
       oldTickerObj = newTickerObj;
     }
-    else {
-      // if (exchange != 'livecoin' && exchange != 'novaexchange' && exchange != 'hitBTC') {
-      //   var errTime = new Date();
-      //   console.log('ticker for exchange '+exchange+' failed at '+errTime);
-      //   console.log(error);
-      // }
-    }
-
-    if (exchange != 'cryptopia') {
-      setTimeout(function() {
-        ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-      }, timeGap);
-    }
   });
   // moved the recursive call for cryptopia (to continue the ticker) outside as for some reason its not getting called on some occasions (with no error). So maybe the response is stuck and so the call never gets executed
-
-  if (exchange == 'cryptopia') {
     setTimeout(function() {
       ticker (exchange, oldTickerObj, changeThreshold, tickerDBColumns, timeGap);
-    }, (timeGap+15000));
-  }
+    }, (timeGap));
 }
 
 module.exports = {ticker};

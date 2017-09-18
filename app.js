@@ -7,7 +7,7 @@ stdGetPublicData2 = require('./stdGetPublicData2.js'),
 exchangeList = ['coinMarketCap', 'bittrex', 'livecoin', 'cryptopia', 'novaexchange', 'hitBTC', 'yoBit', 'poloniex', 'coinExchange'],
 //exchangeList = ['novaexchange'],
 tickerDBColumns = ['exchangeName', 'tradePair', 'askPriceUSD', 'askPriceBTC', 'recordTime', 'trackingStatus', 'priceChange'],
-thirtySecThreshold = 0.01, cmcUSDBTC;
+thirtySecThreshold = 0.0001, cmcUSDBTC;
 
 getAllMarketInfo(30000, thirtySecThreshold);
 
